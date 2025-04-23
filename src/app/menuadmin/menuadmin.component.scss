@@ -2,9 +2,9 @@
     grid-column: 1 / -1;
     display: flex;
     align-items: center;
-    background: #3F5B62; /* primary-300 */
+    background: #3F5B62;
     padding: 15px;
-    border-bottom: 3px solid #D69955; /* accent-100 */
+    border-bottom: 3px solid #D69955;
     position: fixed;
     width: calc(100% - 70px);
     top: 20px;
@@ -23,11 +23,11 @@
   
   .header h1 {
     font-size: 22px;
-    color: #EEEEEE; /* text-100 */
+    color: #EEEEEE; 
   }
   .header h4 {
     margin-left: 3%;
-    color: #EEEEEE; /* text-100 */
+    color: #EEEEEE; 
   }
 
   .usuario-header {
@@ -36,11 +36,11 @@
     align-items: center;
     gap: 10px;
     font-weight: bold;
-    color: #EEEEEE; /* o el color que estés usando para textos */
+    color: #EEEEEE;
   }
   
   .sidebar {
-    background: #576F72; /* bg-100 */
+    background: #576F72; 
     padding: 10px;
     border-radius: 10px;
     display: flex;
@@ -64,9 +64,9 @@
     display: block;
     padding: 6px 10px;
     font-size: 16px;
-    background-color: #8CA9AA; /* bg-300 */
+    background-color: #8CA9AA;
     text-decoration: none;
-    color: #EEEEEE; /* text-100 */
+    color: #EEEEEE; 
     border-radius: 8px;
     text-align: center;
     font-weight: bold;
@@ -81,13 +81,13 @@
     transform: translateX(-50%);
     width: 0%;
     height: 3px;
-    background: linear-gradient(to right, #D69955, #F8DAA8); /* accent-100 to accent-200 */
+    background: linear-gradient(to right, #D69955, #F8DAA8);
     border-radius: 2px;
     transition: width 0.3s ease;
   }
   
   .sidebar ul a:hover {
-    background-color: #7D9D9C; /* bg-200 */
+    background-color: #7D9D9C;
     transform: scale(1.05);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   }
@@ -97,10 +97,10 @@
   }
   
   .sidebar .publicidad {
-    border: 3px solid #F8DAA8; /* accent-200 */
+    border: 3px solid #F8DAA8;
     padding: 10px;
-    background: #E4DCCF; /* primary-100 */
-    color: #3F5B62; /* primary-300 */
+    background: #E4DCCF;
+    color: #3F5B62;
     font-weight: bold;
     border-radius: 10px;
     height: 120px;
@@ -145,9 +145,9 @@
     font-size: 16px;
     font-weight: bold;
     color: #EEEEEE;
-    border: 2px solid #D69955; /* accent-100 */
+    border: 2px solid #D69955;
     border-radius: 40px;
-    background: linear-gradient(135deg, #D69955, #3F5B62, #F8DAA8); /* acento - primario */
+    background: linear-gradient(135deg, #D69955, #3F5B62, #F8DAA8);
     background-size: 200% 200%;
     background-position: center;
     cursor: pointer;
@@ -190,7 +190,7 @@
     bottom: 0rem;
     left: 0;
     width: 100%;
-    background: rgba(228, 220, 207, 0.8); /* primary-100 con transparencia */
+    background: rgba(228, 220, 207, 0.8);
     padding: 1rem;
     text-align: center;
     box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
@@ -201,7 +201,7 @@
   .footer p {
     margin: 0;
     font-size: 0.9rem;
-    color: #3F5B62; /* primary-300 */
+    color: #3F5B62;
     letter-spacing: 0.5px;
     font-weight: 400;
     font-family: 'Segoe UI', 'Roboto', sans-serif;
@@ -234,7 +234,7 @@
     align-items: center;
     gap: 10px;
     font-weight: bold;
-    color: #EEEEEE; /* o el color que estés usando para textos */
+    color: #EEEEEE;
   }
 
   .header {

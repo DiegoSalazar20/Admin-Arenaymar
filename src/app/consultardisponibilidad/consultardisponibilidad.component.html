@@ -39,22 +39,24 @@
        
       </div>
   
-      <table *ngIf="habitacionesDisponibles?.length">
-        <thead>
-          <tr>
-            <th>Número de habitación</th>
-            <th>Tipo</th>
-            <th>Costo estadía</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let hab of habitacionesDisponibles">
-            <td>{{ hab.NumeroHabitacion }}</td>
-            <td>{{ hab.TipoHabitacion }}</td>
-            <td>₡{{ hab.Precio | number:'1.0-0' }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table *ngIf="habitacionesDisponibles?.length">
+          <thead>
+            <tr>
+              <th>Número de habitación</th>
+              <th>Tipo</th>
+              <th>Costo estadía</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let hab of habitacionesDisponibles">
+              <td>{{ hab.NumeroHabitacion }}</td>
+              <td>{{ hab.TipoHabitacion }}</td>
+              <td>₡{{ hab.Precio | number:'1.0-0' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       
     </section>
   </div>
