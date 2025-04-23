@@ -1,0 +1,32 @@
+<header class="header">
+    <button class="mobile-menu-toggle" (click)="toggleMenu()">☰</button>
+    <img src="https://i.ibb.co/fYYxbjmG/logo-1.png" alt="A&M" class="logo" />
+    <h1>Arena & Mar Resort </h1>
+    <h4> Modulo administrativo </h4> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <div class="usuario-header">
+        <i class="fas fa-user"></i> Bienvenido
+      </div>
+
+    <button class="boton-salir" (click)="redirigir('/reservaenlinea')"> Salir </button>
+  </header>
+  
+  <nav class="sidebar" [class.active]="menuOpen">
+    <ul>
+      <li (click)="redirigir('/home')"><a>Home</a></li>
+      <li (click)="redirigir('/sobrenosotros')"><a>Modificar páginas</a></li>
+      <li (click)="redirigir('/facilidades')"><a>Listado de reservaciones</a></li>
+      <li (click)="redirigir('/comollegar')"><a>Administrar habitaciones</a></li>
+      <li (click)="redirigir('/tarifas')"><a>Ver estado de hotel hoy</a></li>
+      <li (click)="redirigir('/reservaenlinea')"><a>Consultar disponibilidad de habitaciones</a></li>
+      <li (click)="redirigir('/contactenos')"><a class="holographic-card" >Publicidad</a></li>
+    </ul>
+  
+    
+  
+  
+  </nav>
+  
+  <footer class="footer">
+    <p>Copyright©Hotel Arena & Mar Resort 2025</p>
+  </footer>

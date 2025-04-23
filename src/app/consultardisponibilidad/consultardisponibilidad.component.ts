@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { MenuadminComponent } from '../menuadmin/menuadmin.component';
 @Component({
   selector: 'app-consultardisponibilidad',
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, MenuadminComponent],
   templateUrl: './consultardisponibilidad.component.html',
   styleUrl: './consultardisponibilidad.component.scss'
 })
