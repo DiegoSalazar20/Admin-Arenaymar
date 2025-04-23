@@ -1,1 +1,62 @@
-<p>consultardisponibilidad works!</p>
+<div class="container">
+  
+    <section class="main-content">
+      <div class="formulario-reserva">
+        <h2>Consultar disponibilidad de habitaciones</h2>
+  
+        <form (ngSubmit)="consultarDisponibilidad()" #formulario="ngForm">
+          <div class="grupo-campos">
+            <div class="campo">
+              <label for="fechaLlegada">Fecha de Llegada</label>
+              <input type="date" id="fechaLlegada" [(ngModel)]="fechaLlegada" name="fechaLlegada" required />
+            </div>
+  
+            <div class="campo">
+              <label for="fechaSalida">Fecha de Salida</label>
+              <input type="date" id="fechaSalida" [(ngModel)]="fechaSalida" name="fechaSalida" required />
+            </div>
+          </div>
+  
+          <div class="campo">
+            <label for="tipoHabitacion">Tipo de Habitación</label>
+            <select id="tipoHabitacion" [(ngModel)]="tipoHabitacion" name="tipoHabitacion">
+  
+              <option value="">Todas las Habitaciones</option>
+              <option value="1">Habitación junior</option>
+              <option value="2">Habitación estándar</option>
+              <option value="3">Suite</option>
+            </select>
+          </div>
+  
+          <div class="boton-centrado">
+            <button type="submit">Consultar disponibilidad</button>
+          </div>
+  
+          <div *ngIf="mensajeError" class="mensaje-error">{{ mensajeError }}</div>
+          <div *ngIf="mensajeInfo" class="mensaje-info">{{ mensajeInfo }}</div>
+        </form>
+
+       
+      </div>
+  
+      <table *ngIf="habitacionesDisponibles?.length">
+        <thead>
+          <tr>
+            <th>Número de habitación</th>
+            <th>Tipo</th>
+            <th>Costo estadía</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hab of habitacionesDisponibles">
+            <td>{{ hab.NumeroHabitacion }}</td>
+            <td>{{ hab.TipoHabitacion }}</td>
+            <td>₡{{ hab.Precio | number:'1.0-0' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+    </section>
+  </div>
+  
+  
