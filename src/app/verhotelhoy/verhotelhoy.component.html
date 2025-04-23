@@ -1,9 +1,41 @@
 <div class="container">
-    <app-menuadmin> </app-menuadmin>
+    <app-menuadmin></app-menuadmin>
+
     <section class="main-content">
-        <div class="homeadmin-contenido">
-            <h2 class="titulo-admin">verhotelhoy works!</h2>
+
+        <h2>Estado de habitaciones hoy</h2>
+
+        <div *ngIf="cargando" class="mensaje-info">Cargando...</div>
+        <div *ngIf="error" class="mensaje-error">{{ error }}</div>
+            <table class="table-responsive" *ngIf="habitaciones.length">
+                <thead>
+                    <tr>
+                        <th>Nº Habitación</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let h of habitaciones">
+                        <td data-label="Nº Habitación"><span>{{ h.NumeroHabitacion }}</span></td>
+                        <td data-label="Tipo"><span>{{ h.TipoHabitacion }}</span></td>
+                        <td data-label="Estado" [ngClass]="{
+              'estado-disponible':    h.Estado==='Disponible',
+              'estado-reservada':     h.Estado==='Reservada',
+              'estado-ocupada':       h.Estado==='Ocupada',
+              'estado-deshabilitada': h.Estado==='Deshabilitada'
+            }">
+                            <span>{{ h.Estado }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+        <div *ngIf="!cargando && !error && !habitaciones.length" class="mensaje-info">
+            No hay registros de habitaciones para hoy.
         </div>
+
     </section>
 </div>
-
