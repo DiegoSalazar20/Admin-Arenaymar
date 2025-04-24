@@ -19,6 +19,7 @@ export class ConsultardisponibilidadComponent {
   fechaSalida!: Date;
   tipoHabitacion: string = '';
   habitacionesDisponibles: any[] = [];
+  cargando = false;
 
   consultarDisponibilidad() {
     this.habitacionesDisponibles = [];
@@ -51,18 +52,22 @@ export class ConsultardisponibilidadComponent {
         params = params.set('idTipoHabitacion', this.tipoHabitacion.toString());
       }
     }
+    this.cargando=true;
     let apiUrl = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Habitacion/HabitacionesDisponibles';
     this.http.get<any[]>(apiUrl, { params: params }).subscribe({
       next: (response) => {
         if (response.length === 0) {
           this.mensajeError = "No hay habitaciones disponibles.";
+          this.cargando=false;
         } else {
           this.habitacionesDisponibles = response;
+          this.cargando=false;
         }
       },
       error: (error) => {
         console.error(error);
         this.mensajeError = 'Ocurrió un error al consultar la disponibilidad.';
+        this.cargando=false;
       }
     });
   }
