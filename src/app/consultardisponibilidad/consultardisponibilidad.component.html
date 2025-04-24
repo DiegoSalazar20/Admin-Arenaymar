@@ -31,7 +31,7 @@
             <div class="boton-centrado">
               <button type="submit">Consultar disponibilidad</button>
             </div>
-    
+            <div *ngIf="cargando" class="mensaje-info"><b>Cargando . . .</b></div>
             <div *ngIf="mensajeError" class="mensaje-error">{{ mensajeError }}</div>
             <div *ngIf="mensajeInfo" class="mensaje-info">{{ mensajeInfo }}</div>
           </form>
