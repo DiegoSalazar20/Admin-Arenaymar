@@ -95,6 +95,26 @@
   .sidebar ul a:hover::after {
     width: 80%;
   }
+
+  .sidebar ul li.activo a {
+    background-color: #7D9D9C; 
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    position: relative; 
+  }
+  
+  .sidebar ul li.activo a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 3px;
+    background: linear-gradient(to right, #D69955, #F8DAA8);
+    border-radius: 2px;
+  }
+  
   
   .sidebar .publicidad {
     border: 3px solid #F8DAA8;
