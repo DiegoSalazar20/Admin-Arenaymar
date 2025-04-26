@@ -12,12 +12,16 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 
 export class MenuadminComponent implements OnInit {
+  public menuOpen: boolean = false;
+  public rutaActual: string = '';
+
   constructor(private router: Router, private http: HttpClient) { }
 
-  public menuOpen: boolean = false;
-
   ngOnInit(): void {
-   
+    this.rutaActual = this.router.url;
+    this.router.events.subscribe(() => {
+      this.rutaActual = this.router.url;
+    });
   }
 
   toggleMenu(): void {

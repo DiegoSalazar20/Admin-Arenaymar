@@ -47,9 +47,11 @@ html, body {
 
 .table-responsive {
   overflow-x: auto;
-  margin: 2em 0;
+  width: 70%;
+  margin-bottom: 10px;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  min-height: 250px;
 }
 
 .table-responsive table {
@@ -57,7 +59,14 @@ html, body {
   border-collapse: collapse;
   font-family: 'Segoe UI', sans-serif;
   border-radius: 10px;
+  overflow: hidden;
 }
+
+thead tr:first-child th:first-child { border-top-left-radius: 10px; }
+thead tr:first-child th:last-child { border-top-right-radius: 10px; }
+tbody tr:last-child td:first-child { border-bottom-left-radius: 10px; }
+tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
+
 
 .table-responsive th {
   background: #3F5B62;
@@ -86,6 +95,35 @@ html, body {
   background: #3F5B62;
   transition: all 0.3s ease;
 }
+
+.fecha-hoy {
+  font-size: 1.1rem;
+  color: #EEEEEE;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.btn-imprimir {
+  margin-top: 30px;
+  padding: 10px 20px;
+  margin-top: 0%;
+  margin-bottom: 40px;
+  background-color: #3F5B62;
+  color: #EEEEEE;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-imprimir:hover {
+  background-color: #576F72;
+}
+
 
 
 @media (max-width: 480px) {

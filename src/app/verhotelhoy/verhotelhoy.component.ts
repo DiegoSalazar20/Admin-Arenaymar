@@ -18,12 +18,16 @@ export class VerhotelhoyComponent implements OnInit {
   habitaciones: any[] = [];
   cargando = true;
   error = '';
+  fechaHoy: string = '';
 
   private apiUrl = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Habitacion/VerEstadoHabitacionesHoy';
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    const hoy = new Date();
+    this.fechaHoy = hoy.toLocaleDateString('es-CR', { day: 'numeric', month: 'numeric', year: 'numeric'});
+
     this.http.get<any[]>(this.apiUrl).subscribe({
       next: data => {
         this.habitaciones = data;
@@ -35,5 +39,9 @@ export class VerhotelhoyComponent implements OnInit {
         this.cargando = false;
       }
     });
+  }
+
+  imprimir(): void {
+    window.print();
   }
 }
