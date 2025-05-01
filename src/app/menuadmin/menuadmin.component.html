@@ -5,10 +5,10 @@
     <h4> Modulo administrativo </h4> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <div class="usuario-header">
-        <i class="fas fa-user"></i> Bienvenido
+        <i class="fas fa-user"></i> Bienvenido {{nombreAdmin}}
       </div>
 
-    <button class="boton-salir" (click)="redirigir('/reservaenlinea')"> Salir </button>
+    <button class="boton-salir" (click)="cerrarSesion()"> Salir </button>
   </header>
   
   <nav class="sidebar" [class.active]="menuOpen">
