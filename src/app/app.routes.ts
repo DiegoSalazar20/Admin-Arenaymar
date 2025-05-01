@@ -6,9 +6,10 @@ import { ListadoreservasComponent } from './listadoreservas/listadoreservas.comp
 import { ModificarpaginasComponent } from './modificarpaginas/modificarpaginas.component';
 import { VerhotelhoyComponent } from './verhotelhoy/verhotelhoy.component';
 import { HomeadminComponent } from './homeadmin/homeadmin.component';
+import { IniciosesionempleadoComponent } from './iniciosesionempleado/iniciosesionempleado.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'homeadmin', pathMatch: 'full' }, 
+    { path: '', component: IniciosesionempleadoComponent}, 
     { path: 'homeadmin', component: HomeadminComponent },
     { path: 'consultardisponibilidad', component: ConsultardisponibilidadComponent },
     { path: 'actualizarpublicidad', component: ActualizarpublicidadComponent },
@@ -16,5 +17,6 @@ export const routes: Routes = [
     { path: 'listadoreservas', component: ListadoreservasComponent },
     { path: 'modificarpaginas', component: ModificarpaginasComponent },
     { path: 'verhotelhoy', component: VerhotelhoyComponent },
+    { path: 'iniciosesionempleado', component: IniciosesionempleadoComponent},
     
 ];
