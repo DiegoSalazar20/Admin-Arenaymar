@@ -40,6 +40,7 @@ export class MenuadminComponent implements OnInit {
 
   cerrarSesion(){
     if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token');
       localStorage.removeItem('Nombre');
     }
     

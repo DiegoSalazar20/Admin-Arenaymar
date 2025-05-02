@@ -17,52 +17,38 @@ export class IniciosesionempleadoComponent {
   contrasena: string = '';
   mensajeError: string | null = null;
   
-  apiUrl = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Administrador';
+  apiUrl = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Administrador/login';
 
   constructor(private router: Router, private http: HttpClient) {}
 
   async iniciarSesion(): Promise<void> {
     this.mensajeError = null;
-    const cifrada = await this.hashContrasena(this.contrasena);
-    const url = `${this.apiUrl}?nombreUsuario=${this.nombreUsuario}&contrasena=${this.contrasena}`;
+ 
+    const datosLogin = {
+      nombreUsuario: this.nombreUsuario,
+      contrasena: this.contrasena
+    };
 
-    this.http.get<any>(url).subscribe({
-      next: data => {
-        if (data[0] && data[0].idAdministrador) {
-          if (data[0].estado) {
-            localStorage.setItem('Nombre', data[0].nombre.toString());
+    this.http.post<any>(this.apiUrl, datosLogin).subscribe({
+      next: res => {
+        if (res && res.token && res.estado !== undefined) {
+          if (res.estado) {
+            localStorage.setItem('token', res.token);
+            localStorage.setItem('Nombre', res.nombre);
             this.router.navigate(['/homeadmin']);
           } else {
             this.mensajeError = 'Usuario deshabilitado';
           }
         } else {
-          
-         this.mensajeError = 'Usuario y contraseña no coinciden';
+          this.mensajeError = 'Usuario y contraseña no coinciden';
         }
-        
       },
       error: err => {
         console.error(err);
-        
-       
+        this.mensajeError = 'Usuario y contraseña no coinciden';
       }
     });
 
-  }
-
-
-  async hashContrasena(contrasena: string): Promise<string> {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(contrasena);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    return this.bufferToHex(hashBuffer);
-  }
-
-  // Conversión de ArrayBuffer a cadena hexadecimal
-  bufferToHex(buffer: ArrayBuffer): string {
-    return [...new Uint8Array(buffer)]
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
   }
 
   redirigir(ruta: string) {
