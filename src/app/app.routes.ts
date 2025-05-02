@@ -7,16 +7,18 @@ import { ModificarpaginasComponent } from './modificarpaginas/modificarpaginas.c
 import { VerhotelhoyComponent } from './verhotelhoy/verhotelhoy.component';
 import { HomeadminComponent } from './homeadmin/homeadmin.component';
 import { IniciosesionempleadoComponent } from './iniciosesionempleado/iniciosesionempleado.component';
+import { authGuard } from './guards/auth.guards';
 
 export const routes: Routes = [
-    { path: '', component: IniciosesionempleadoComponent}, 
-    { path: 'homeadmin', component: HomeadminComponent },
-    { path: 'consultardisponibilidad', component: ConsultardisponibilidadComponent },
-    { path: 'actualizarpublicidad', component: ActualizarpublicidadComponent },
-    { path: 'administrarhabitaciones', component: AdministrarhabitacionesComponent },
-    { path: 'listadoreservas', component: ListadoreservasComponent },
-    { path: 'modificarpaginas', component: ModificarpaginasComponent },
-    { path: 'verhotelhoy', component: VerhotelhoyComponent },
-    { path: 'iniciosesionempleado', component: IniciosesionempleadoComponent},
+    { path: '', component: IniciosesionempleadoComponent},
+    { path: 'iniciosesion', component: IniciosesionempleadoComponent }, 
+    { path: 'homeadmin', component: HomeadminComponent , canActivate: [authGuard] },
+    { path: 'consultardisponibilidad', component: ConsultardisponibilidadComponent , canActivate: [authGuard] },
+    { path: 'actualizarpublicidad', component: ActualizarpublicidadComponent , canActivate: [authGuard] },
+    { path: 'administrarhabitaciones', component: AdministrarhabitacionesComponent , canActivate: [authGuard] },
+    { path: 'listadoreservas', component: ListadoreservasComponent , canActivate: [authGuard] },
+    { path: 'modificarpaginas', component: ModificarpaginasComponent , canActivate: [authGuard] },
+    { path: 'verhotelhoy', component: VerhotelhoyComponent , canActivate: [authGuard] },
+    { path: 'iniciosesionempleado', component: IniciosesionempleadoComponent, canActivate: [authGuard] },
     
 ];
