@@ -1,23 +1,48 @@
-<div class="fondo">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <div class="cuadro-registro">
-      <h2>Iniciar Sesión</h2>
-      <form (ngSubmit)="iniciarSesion()">
-        <div class="input-row">
-          <i class="fa-solid fa-user"></i>
-          <input type="email" [(ngModel)]="nombreUsuario" name="nombreUsuario" placeholder="Usuario" required />
-        </div>
-        <div class="input-row">
-          <i class="fa-solid fa-lock"></i>
-          <input type="password" [(ngModel)]="contrasena" name="contrasena" placeholder="Contraseña" required />
-        </div>
-        <button type="submit">Iniciar Sesión</button>
-        <div *ngIf="mensajeError" class="mensaje-error"> {{mensajeError}}</div>
-      </form>
-    </div>
-  </div>
+<div class="inicio-fondo">
+  <div class="inicio-opacar"></div>
 
-  <footer class="footer">
-    <p>Copyright©Hotel Arena & Mar Resort 2025</p>
-  </footer>
-  
+  <div class="inicio-cuadro">
+    <img src="https://i.ibb.co/fYYxbjmG/logo-1.png" alt="Logo Hotel" class="logo" />
+    <h2>Inicio de sesión</h2>
+
+    <form (ngSubmit)="iniciarSesion()">
+      <div class="formulario-campo">
+        <i class="fa-solid fa-user"></i>
+        <input
+          type="email"
+          [(ngModel)]="nombreUsuario"
+          name="nombreUsuario"
+          placeholder="Correo electrónico"
+          required
+        />
+        <span class="linea"></span>
+      </div>
+
+      <div class="formulario-campo">
+        <i class="fa-solid fa-lock"></i>
+        <input
+          type="password"
+          [(ngModel)]="contrasena"
+          name="contrasena"
+          placeholder="Contraseña"
+          required
+        />
+        <span class="linea"></span>
+      </div>
+
+      <button type="submit" [disabled]="cargando">
+        <ng-container *ngIf="!cargando">Ingresar</ng-container>
+        <div *ngIf="cargando" class="cargando"></div>
+      </button>
+      
+
+      <div *ngIf="mensajeError" class="mensaje-error">
+        {{ mensajeError }}
+      </div>
+    </form>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>© Hotel Arena & Mar Resort 2025</p>
+</footer>
