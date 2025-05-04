@@ -16,6 +16,7 @@ export class IniciosesionempleadoComponent {
   nombreUsuario: string = '';
   contrasena: string = '';
   mensajeError: string | null = null;
+  cargando: boolean = false;
   
   apiUrl = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Administrador/login';
 
@@ -23,6 +24,13 @@ export class IniciosesionempleadoComponent {
 
   async iniciarSesion(): Promise<void> {
     this.mensajeError = null;
+
+    if (!this.nombreUsuario || !this.contrasena) {
+      this.mensajeError = 'Todos los campos son obligatorios';
+      return;
+    }
+
+    this.cargando=true;
  
     const datosLogin = {
       nombreUsuario: this.nombreUsuario,
@@ -35,16 +43,19 @@ export class IniciosesionempleadoComponent {
           if (res.estado) {
             localStorage.setItem('token', res.token);
             localStorage.setItem('Nombre', res.nombre);
+            this.cargando=false;
             this.router.navigate(['/homeadmin']);
           } else {
+            this.cargando=false;
             this.mensajeError = 'Usuario deshabilitado';
           }
         } else {
+          this.cargando=false;
           this.mensajeError = 'Usuario y contraseña no coinciden';
         }
       },
       error: err => {
-        console.error(err);
+        this.cargando=false;
         this.mensajeError = 'Usuario y contraseña no coinciden';
       }
     });

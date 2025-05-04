@@ -1,108 +1,225 @@
-.fondo {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #CFB997;
-  }
-  .mensaje-error {
-    color: red;
-    margin-top: 10px;
-    text-align: center;
-  }
-  .footer {
-    position: fixed;
-    bottom: 0rem;
-    left: 0;
-    width: 100%;
-    background: 0.8;
-    padding: 1rem;
-    text-align: center;
-    border-top: none;
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
-    z-index: 100;
-    backdrop-filter: blur(6px);
-  
-    p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #000;
-      letter-spacing: 0.5px;
-      font-weight: 400;
-      font-family: 'Segoe UI', 'Roboto', sans-serif;
-    }
-  }
-  
-  .cuadro-registro {
-    background-color: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 350px;
-  
-    h2 {
-      font-size: 28px;
-      color: #3E5975;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    p {
-      text-align: justify;
-      color: #3E5975;
-      margin-bottom: 20px;
-    }
-  
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-  
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #3E5975;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-  
-      &:hover {
-        background-color:#CFB997;
-      }
-    }
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #576F72;
+  overflow: hidden;
+}
 
-   
+.inicio-fondo {
+  background-image: url('../../assets/Inicio.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .input-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-    
-    .input-row i {
-      margin-right: 10px;
-      font-size: 18px;
-      color: #555;
-      min-width: 20px;
-      text-align: center;
-    }
-    
-    .input-row input {
-      flex: 1;
-      padding: 10px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    
- 
-    
+.inicio-opacar {
+  backdrop-filter: blur(0px);
+  background-color: rgba(255, 255, 255, 0.2);
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.inicio-cuadro {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px 30px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  animation: entrada 0.9s ease;
+}
+
+.logo {
+  width: 220px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  border-radius: 10px;
+}
+
+@keyframes entrada {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
   }
-  
+  60% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  80% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.inicio-cuadro h2 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #3F5B62;
+  font-weight: 700;
+}
+
+.formulario-campo {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.formulario-campo i {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #3F5B62;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.formulario-campo input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  color: #3F5B62;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.formulario-campo input:focus {
+  box-shadow: 0 0 12px rgba(214, 153, 85, 0.8);
+}
+
+
+.formulario-campo input::placeholder {
+  color: #7D9D9C;
+  transition: 0.3s ease;
+}
+
+.formulario-campo input:focus::placeholder {
+  color: transparent;
+}
+
+.formulario-campo input:focus {
+  box-shadow: 0 0 6px rgba(214, 153, 85, 0.5);
+}
+
+.linea {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #D69955;
+  width: 0%;
+  position: absolute;
+  bottom: 5px;
+  left: 40px;
+  transition: width 0.3s ease;
+}
+
+.formulario-campo input:focus + .linea {
+  width: calc(100% - 80px);
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #7D9D9C;
+  color: #EEEEEE;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+button:hover {
+  background-color: #3F5B62;
+  transform: scale(1.03);
+}
+
+button:disabled {
+  background-color: #3F5B62;
+  cursor: not-allowed;
+}
+
+.cargando {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #EEEEEE;
+  border-top: 3px solid #3F5B62;
+  border-radius: 50%;
+  animation: cargar 0.6s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes cargar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mensaje-error {
+  margin-top: 20px;
+  padding: 12px 16px;
+  background-color: rgba(217, 83, 79, 0.15);
+  color: #d9534f;
+  border: 1px solid #d9534f;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  animation: fadeInError 0.4s ease;
+  box-shadow: 0 2px 6px rgba(217, 83, 79, 0.2);
+}
+
+@keyframes fadeInError {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 1rem;
+  backdrop-filter: blur(6px);
+  text-align: center;
+  font-size: 0.9rem;
+  color: #000;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
