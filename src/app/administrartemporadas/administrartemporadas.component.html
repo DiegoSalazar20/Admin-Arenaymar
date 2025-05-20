@@ -1,0 +1,143 @@
+<div class="container">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <app-menuadmin></app-menuadmin>
+
+    <section class="main-content">
+        <h2>Temporadas</h2>
+        <div *ngIf="cargando" class="mensaje-info">Cargando...</div>
+        <div *ngIf="error" class="mensaje-error">{{ error }}</div>
+
+        <br>
+
+        <!--
+        <div style="margin-bottom: 1rem;">
+            <button (click)="abrirFormularioNuevaTemporada()" class="btn-agregar">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+        -->
+        
+
+        <br>
+
+        <table class="table-responsive" *ngIf="temporadas.length">
+
+            <thead>
+                <tr>
+                    <th>Nombre de temporada</th>
+                    <th>Fecha de inicio</th>
+                    <th>Fecha final</th>
+                    <th>Descuento</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let t of temporadas">
+                    <td data-label="Nombre de temporada"><span>{{ t.nombre_temporada }}</span></td>
+                    <td data-label="Fecha de inicio"><span>{{ t.fecha_inicio | date:'dd-MMM' }}</span></td>
+                    <td data-label="Fecha final"><span>{{ t.fecha_final | date:'dd-MMM' }}</span></td>
+                    <td data-label="Descuento"><span>{{ t.descuento }}%</span></td>
+                    <td data-label="Acciones">
+                        <button (click)="editarTemporada(t)" class="btn-accion editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                        <!--
+                        <button (click)="eliminarTemporada(t)" class="btn-accion eliminar">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                        -->
+
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="!cargando && !error && !temporadas.length" class="mensaje-info">
+            No hay temporadas registradas.
+
+        </div>
+
+    </section>
+</div>
+
+<div class="modal-backdrop" *ngIf="mostrarModal">
+    <div class="modal-container" [ngClass]="{'cerrando': cerrandoModal}" (animationend)="onAnimationEnd('modal')">
+
+        <div class="modal-header">
+            <h2>{{ modoEdicion ? 'Editar temporada' : 'Nueva temporada' }}</h2>
+            <button class="close-button" (click)="cerrarModal()">×</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="modal-field">
+                <label for="nombreTemporada">Nombre de temporada:</label>
+                <input id="nombreTemporada" type="text" [(ngModel)]="temporada.nombre_temporada" />
+            </div>
+            <div class="modal-field">
+                <label for="fechaInicio">Fecha de inicio:</label>
+                <input id="fechaInicio" type="date" [(ngModel)]="temporada.fecha_inicio" />
+            </div>
+            <div class="modal-field">
+                <label for="fechaFinal">Fecha final:</label>
+                <input id="fechaFinal" type="date" [(ngModel)]="temporada.fecha_final" />
+            </div>
+            <div class="modal-field">
+                <label for="descuento">Descuento (%):</label>
+                <input id="descuento" type="number" [(ngModel)]="temporada.descuento" min="0" max="100" />
+            </div>
+
+            <div *ngIf="mensajeErrorModal" class="modal-error">
+                {{ mensajeErrorModal }}
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+
+            <button class="btn-confirm" (click)="modoEdicion ? actualizarTemporada() : registrarTemporada()" [disabled]="cargandoAccion">
+                <ng-container *ngIf="!cargandoAccion">{{ modoEdicion ? 'Actualizar' : 'Registrar' }}</ng-container>
+                <div *ngIf="cargandoAccion" class="cargando"></div>
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="mostrarNotificacion">
+    <div class="modal-container" [ngClass]="{'cerrando': cerrandoNotificacion}"
+        (animationend)="onAnimationEnd('Notificacion')">
+        <div class="modal-header">
+            <h2>{{tituloNotificacion}}</h2>
+            <button class="close-button" (click)="cerrarModalNotificacion()">×</button>
+        </div>
+        <div class="modal-body">
+            <br>
+            <p>{{mensajeNotificacion}}</p>
+            <br>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-confirm" (click)="cerrarModalNotificacion()">Aceptar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="mostrarConfirmacion">
+    <div class="modal-container" [ngClass]="{'cerrando': cerrandoConfirmacion}"
+        (animationend)="onAnimationEnd('Confirmacion')">
+        <div class="modal-header">
+            <h2>{{ tituloConfirmacion }}</h2>
+            <button class="close-button" (click)="cerrarModalConfirmacion()">×</button>
+        </div>
+        <div class="modal-body">
+            <br>
+            <p>{{ mensajeConfirmacion }}</p>
+            <br>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="cerrarModalConfirmacion()">Cancelar</button>
+            <button class="btn-confirm" (click)="confirmarEliminarTemporada()">Eliminar</button>
+        </div>
+    </div>
+</div>
