@@ -8,12 +8,12 @@
             <div class="grupo-campos">
               <div class="campo">
                 <label for="fechaLlegada">Fecha de Llegada</label>
-                <input type="date" id="fechaLlegada" [(ngModel)]="fechaLlegada" name="fechaLlegada" required />
+                <input type="date" id="fechaLlegada" [(ngModel)]="fechaLlegada" name="fechaLlegada" [min]="hoy" required />
               </div>
     
               <div class="campo">
                 <label for="fechaSalida">Fecha de Salida</label>
-                <input type="date" id="fechaSalida" [(ngModel)]="fechaSalida" name="fechaSalida" required />
+                <input type="date" id="fechaSalida" [(ngModel)]="fechaSalida" name="fechaSalida" [min]="hoy" required />
               </div>
             </div>
     

@@ -20,6 +20,7 @@ export class ConsultardisponibilidadComponent {
   tipoHabitacion: string = '';
   habitacionesDisponibles: any[] = [];
   cargando = false;
+  hoy: string = new Date().toISOString().split('T')[0];
 
   consultarDisponibilidad() {
     this.habitacionesDisponibles = [];
