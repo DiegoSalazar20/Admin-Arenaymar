@@ -16,7 +16,7 @@
             </button>
         </div>
         -->
-        
+
 
         <br>
 
@@ -48,7 +48,7 @@
                         </button>
                         -->
 
-                        
+
                     </td>
                 </tr>
             </tbody>
@@ -73,7 +73,8 @@
         <div class="modal-body">
             <div class="modal-field">
                 <label for="nombreTemporada">Nombre de temporada:</label>
-                <input id="nombreTemporada" type="text" [(ngModel)]="temporada.nombre_temporada" />
+                <input id="nombreTemporada" type="text" [(ngModel)]="temporada.nombre_temporada"
+                    pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]*" maxlength="50" (keypress)="validarTexto($event)" />
             </div>
             <div class="modal-field">
                 <label for="fechaInicio">Fecha de inicio:</label>
@@ -85,7 +86,8 @@
             </div>
             <div class="modal-field">
                 <label for="descuento">Descuento (%):</label>
-                <input id="descuento" type="number" [(ngModel)]="temporada.descuento" min="0" max="100" />
+                <input id="descuento" type="number" [(ngModel)]="temporada.descuento" min="-100" max="100" step="1"
+                    (keypress)="validarNumeros($event)" />
             </div>
 
             <div *ngIf="mensajeErrorModal" class="modal-error">
@@ -96,7 +98,8 @@
         <div class="modal-footer">
             <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
 
-            <button class="btn-confirm" (click)="modoEdicion ? actualizarTemporada() : registrarTemporada()" [disabled]="cargandoAccion">
+            <button class="btn-confirm" (click)="modoEdicion ? actualizarTemporada() : registrarTemporada()"
+                [disabled]="cargandoAccion">
                 <ng-container *ngIf="!cargandoAccion">{{ modoEdicion ? 'Actualizar' : 'Registrar' }}</ng-container>
                 <div *ngIf="cargandoAccion" class="cargando"></div>
             </button>
