@@ -8,6 +8,7 @@ import { VerhotelhoyComponent } from './verhotelhoy/verhotelhoy.component';
 import { HomeadminComponent } from './homeadmin/homeadmin.component';
 import { IniciosesionempleadoComponent } from './iniciosesionempleado/iniciosesionempleado.component';
 import { AdministrartemporadasComponent } from './administrartemporadas/administrartemporadas.component';
+import { AdministrarofertasComponent } from './administrarofertas/administrarofertas.component';
 import { authGuard } from './guards/auth.guards';
 
 export const routes: Routes = [
@@ -21,6 +22,6 @@ export const routes: Routes = [
     { path: 'modificarpaginas', component: ModificarpaginasComponent , canActivate: [authGuard] },
     { path: 'verhotelhoy', component: VerhotelhoyComponent , canActivate: [authGuard] },
     { path: 'iniciosesionempleado', component: IniciosesionempleadoComponent, canActivate: [authGuard] },
-    { path: 'administrartemporadas', component: AdministrartemporadasComponent, canActivate: [authGuard]}
-    
+    { path: 'administrartemporadas', component: AdministrartemporadasComponent, canActivate: [authGuard]},
+    { path: 'administrarofertas', component: AdministrarofertasComponent, canActivate: [authGuard]}
 ];

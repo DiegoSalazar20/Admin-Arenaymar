@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
 export class AdministrartemporadasComponent {
   temporadas: any[] = [];
   cargando = true;
-  cargandoAccion=false;
+  cargandoAccion = false;
   error = '';
 
   mostrarModal = false;
@@ -56,6 +56,22 @@ export class AdministrartemporadasComponent {
 
     this.cargarTemporadas();
   }
+  validarTexto(event: KeyboardEvent) {
+    const regex = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]$/;
+    const inputChar = String.fromCharCode(event.keyCode);
+    if (!regex.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  validarNumeros(event: KeyboardEvent) {
+    const regex = /^[0-9-]$/;
+    const inputChar = String.fromCharCode(event.keyCode);
+    if (!regex.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
 
   abrirFormularioNuevaTemporada() {
     this.modoEdicion = false;
@@ -105,25 +121,33 @@ export class AdministrartemporadasComponent {
   }
 
   actualizarTemporada() {
-    this.cargandoAccion=true;
+    const desc = Number(this.temporada.descuento);
+
+    this.cargandoAccion = true;
+
+    if (isNaN(desc) || desc < -100 || desc > 100) {
+    this.mensajeErrorModal = 'El descuento debe estar entre -100 y 100.';
+    this.cargandoAccion=false;
+    return;
+  }
     const datos = {
       idTemporada: this.temporada.idTemporada,
       nombre_temporada: this.temporada.nombre_temporada,
       fecha_inicio: this.temporada.fecha_inicio,
       fecha_final: this.temporada.fecha_final,
-      descuento: this.temporada.descuento
+      descuento: desc
     };
 
     this.http.put(this.apiUrl, datos).subscribe({
       next: () => {
         this.cerrarModal();
-        this.cargandoAccion=false;
+        this.cargandoAccion = false;
         this.abrirModalNotificacion('Temporada actualizada', 'Los datos de la temporada fueron actualizados con éxito.');
         this.cargarTemporadas();
       },
       error: (error) => {
         console.error(error);
-        this.cargandoAccion=false;
+        this.cargandoAccion = false;
         this.abrirModalNotificacion('Erro al actualizar la temporada', 'Ocurrió un error al actualizar los datos de la temporada.');
         this.mensajeErrorModal = 'Error al actualizar la temporada.';
       }
@@ -131,10 +155,10 @@ export class AdministrartemporadasComponent {
   }
 
   registrarTemporada() {
-    this.cargandoAccion=true;
+    this.cargandoAccion = true;
     if (!this.temporada.nombre_temporada || !this.temporada.fecha_inicio || !this.temporada.fecha_final) {
       this.mensajeErrorModal = 'Todos los campos son obligatorios.';
-      this.cargandoAccion=false;
+      this.cargandoAccion = false;
       return;
     }
 
@@ -149,13 +173,13 @@ export class AdministrartemporadasComponent {
     this.http.post(this.apiUrl, datos).subscribe({
       next: () => {
         this.cerrarModal();
-        this.cargandoAccion=false;
+        this.cargandoAccion = false;
         this.abrirModalNotificacion('Temporada registrada', 'La nueva temporada fue actualizada con éxito.');
         this.cargarTemporadas();
       },
       error: (error) => {
         console.error(error);
-        this.cargandoAccion=false;
+        this.cargandoAccion = false;
         this.abrirModalNotificacion('Error al registrar la temporada', 'Ocurrió un error al registrar la temporada.');
         this.mensajeErrorModal = 'Error al registrar la temporada.';
       }
@@ -163,21 +187,21 @@ export class AdministrartemporadasComponent {
   }
 
   confirmarEliminarTemporada() {
-  const url = `${this.apiUrl}/${this.temporadaSeleccionada.idTemporada}`;
+    const url = `${this.apiUrl}/${this.temporadaSeleccionada.idTemporada}`;
 
-  this.http.delete(url).subscribe({
-    next: () => {
-      this.cerrarModalConfirmacion();
-      this.abrirModalNotificacion('Temporada eliminada', 'La temporada fue eliminada con éxito.');
-      this.cargarTemporadas();
-    },
-    error: (error) => {
-      console.error(error);
-      this.cerrarModalConfirmacion();
-      this.abrirModalNotificacion('Error al eliminar la temporada', 'Ocurrió un error al intentar eliminar la temporada.');
-    }
-  });
-}
+    this.http.delete(url).subscribe({
+      next: () => {
+        this.cerrarModalConfirmacion();
+        this.abrirModalNotificacion('Temporada eliminada', 'La temporada fue eliminada con éxito.');
+        this.cargarTemporadas();
+      },
+      error: (error) => {
+        console.error(error);
+        this.cerrarModalConfirmacion();
+        this.abrirModalNotificacion('Error al eliminar la temporada', 'Ocurrió un error al intentar eliminar la temporada.');
+      }
+    });
+  }
 
 
   eliminarTemporada(temporada: any) {
@@ -224,7 +248,7 @@ export class AdministrartemporadasComponent {
   }
 
   cerrarModalConfirmacion() {
-    this.cerrandoConfirmacion=true;
+    this.cerrandoConfirmacion = true;
     this.temporadaSeleccionada = null;
   }
 
