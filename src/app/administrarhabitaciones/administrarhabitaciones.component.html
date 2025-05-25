@@ -16,7 +16,7 @@
         </button>
       </h3>
 
-      <table class="table-responsive" *ngIf="habitacionesPorTipo(tipo.nombre).length">
+      <table class="table-responsive" *ngIf="habitacionesPorTipo(tipo.idTipoHabitacion).length">
         <thead>
           <tr>
             <th>Nº Habitación</th>
@@ -24,7 +24,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let h of habitacionesPorTipo(tipo.nombre)">
+          <tr *ngFor="let h of habitacionesPorTipo(tipo.idTipoHabitacion)">
             <td data-label="Nº Habitación"><span>{{ h.NumeroHabitacion }}</span></td>
             <td data-label="Tipo">
               <input type="checkbox" [checked]="h.Estado !== 'Deshabilitada'" />
@@ -33,7 +33,7 @@
         </tbody>
       </table>
 
-      <div *ngIf="!habitacionesPorTipo(tipo.nombre).length && !cargando && !error" class="mensaje-info">
+      <div *ngIf="!habitacionesPorTipo(tipo.idTipoHabitacion).length && !cargando && !error" class="mensaje-info">
         No hay registros de habitaciones para este tipo.
       </div>
     </div>
@@ -51,10 +51,22 @@
     <div class="modal-body">
 
       <div class="modal-titulo-row">
-        <h3>{{ tipoHabitacion.nombre }}</h3>
-        <div class="tarifa">
-          <label>Tarifa Diaria:</label>
-          <input type="number" [(ngModel)]="tipoHabitacion.precio" />
+        <h3>Modificar habitación</h3>
+
+        <br>
+
+        <div class="campos-row">
+
+          <div class="tarifa">
+            <label>Nombre:</label>
+            <input type="text" [(ngModel)]="tipoHabitacion.nombre" />
+          </div>
+
+          <div class="tarifa">
+            <label>Tarifa Diaria:</label>
+            <input type="number" [(ngModel)]="tipoHabitacion.precio" />
+          </div>
+
         </div>
       </div>
 
@@ -85,10 +97,33 @@
       </div>
 
       <div class="modal-footer">
-        <button class="btn-confirm" (click)="actualizarTipoHabitacion()">Aceptar</button>
         <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+
+        <button class="btn-confirm" (click)="actualizarTipoHabitacion()"
+          [disabled]="cargandoAccion">
+          <ng-container *ngIf="!cargandoAccion">{{'Actualizar'}}</ng-container>
+          <div *ngIf="cargandoAccion" class="cargando"></div>
+        </button>
       </div>
     </div>
 
+  </div>
+</div>
+
+<div class="modal-backdrop-notificacion" *ngIf="mostrarNotificacion">
+  <div class="modal-container-notificacion" [ngClass]="{'cerrando': cerrandoNotificacion}"
+    (animationend)="onAnimationEnd('Notificacion')">
+    <div class="modal-header-notificacion">
+      <h2>{{tituloNotificacion}}</h2>
+      <button class="close-button-notificacion" (click)="cerrarModalNotificacion()">×</button>
+    </div>
+    <div class="modal-body-notificacion">
+      <br>
+      <p>{{mensajeNotificacion}}</p>
+      <br>
+    </div>
+    <div class="modal-footer-notificacion">
+      <button class="btn-confirm" (click)="cerrarModalNotificacion()">Aceptar</button>
+    </div>
   </div>
 </div>

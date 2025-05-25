@@ -30,6 +30,15 @@ export class AdministrarhabitacionesComponent {
   mostrarNotificacion = false;
   cerrandoNotificacion = false;
 
+  tituloNotificacion = '';
+  mensajeNotificacion = '';
+
+  apiUrlImgBB = 'https://api.imgbb.com/1/upload';
+  apiKeyImgBB = '3c639960d9b0b9276d0d0cc19b1e2319';
+
+  imagenParaSubir: Blob | null = null;
+  urlParaActualizar = '';
+
   tipoHabitacion: {
     idTipoHabitacion: number | null,
     nombre: string,
@@ -53,20 +62,7 @@ export class AdministrarhabitacionesComponent {
   ngOnInit(): void {
 
     this.cargarTiposDeHabitaciones();
-
-    this.http.get<any[]>(this.apiUrl).subscribe({
-      next: data => {
-        this.habitaciones = data;
-        this.habitacionesEstandar = data.filter(h => h.TipoHabitacion === 'Habitación estandar');
-        this.habitacionesJunior = data.filter(h => h.TipoHabitacion === 'Junior');
-        this.cargando = false;
-      },
-      error: err => {
-        console.error(err);
-        this.error = 'No se pudo cargar el estado de las habitaciones.';
-        this.cargando = false;
-      }
-    });
+    this.cargarHabitaciones()
   }
 
   imprimir(): void {
@@ -117,32 +113,52 @@ export class AdministrarhabitacionesComponent {
       return;
     }
 
-    const datos = {
-      idTipoHabitacion: this.tipoHabitacion.idTipoHabitacion,
-      nombre: this.tipoHabitacion.nombre,
-      descripcion: this.tipoHabitacion.descripcion,
-      precio: this.tipoHabitacion.precio,
-      imagen: 'https://s3.amazonaws.com/static-webstudio-accorhotels-usa-1.wp-ha.fastbooking.com/wp-content/uploads/sites/19/2022/01/06193833/DUF_4113-v-ok-1-1170x780.jpg'
-    }
+    const procesarActualizacion = (imagenUrl: string) => {
+      const datos = {
+        idTipoHabitacion: this.tipoHabitacion.idTipoHabitacion,
+        nombre: this.tipoHabitacion.nombre,
+        descripcion: this.tipoHabitacion.descripcion,
+        precio: this.tipoHabitacion.precio,
+        imagen: imagenUrl
+      };
 
-    this.http.put(this.urlActualizarTipoHabitaciones, datos, { responseType: 'text' }).subscribe({
-      next: () => {
-        this.cerrarModal();
-        this.cargandoAccion = false;
-        this.mostrarNotificacion = true;
-        this.cargarTiposDeHabitaciones();
-        setTimeout(() => {
-          this.mostrarNotificacion = false;
-        }, 3000);
-        this.cerrarModal();
-      },
-      error: (error) => {
-        console.error(error);
-        this.mensajeErrorModal = 'No se pudo actualizar el tipo de habitación.';
-        this.cargandoAccion = false;
-      }
-    });
+      this.http.put(this.urlActualizarTipoHabitaciones, datos, {
+        headers: { 'Content-Type': 'application/json' },
+        responseType: 'text'
+      }).subscribe({
+        next: () => {
+          this.abrirModalNotificacion('Datos actualizados', 'Los datos de la habitación fueron actualizados con éxito.');
+          this.cerrarModal();
+          this.cargandoAccion = false;
+          this.mostrarNotificacion = true;
+          this.cargarHabitaciones();
+          this.cargarTiposDeHabitaciones();
+        },
+        error: (error) => {
+          console.error(error);
+          this.mensajeErrorModal = 'No se pudo actualizar el tipo de habitación.';
+          this.abrirModalNotificacion('Error al actualizar los datos', 'Ocurrió un error al actualizar los datos de la habitación.');
+          this.cargandoAccion = false;
+        }
+      });
+    };
+
+    if (this.imagenParaSubir) {
+      this.subirImagen().subscribe({
+        next: (imageResponse: any) => {
+          const urlImagenSubida = imageResponse.data.url;
+          procesarActualizacion(urlImagenSubida);
+        },
+        error: (error) => {
+          this.abrirModalNotificacion('Error al actualizar los datos', 'Ocurrió un error al subir la imagen, inténtelo de nuevo más tarde.');
+          this.cargandoAccion = false;
+        }
+      });
+    } else {
+      procesarActualizacion(this.tipoHabitacion.imagen);
+    }
   }
+
 
   onAnimationEnd(tipo: 'modal' | 'Notificacion' | 'Confirmacion') {
     if (tipo === 'modal' && this.cerrandoModal) {
@@ -159,6 +175,8 @@ export class AdministrarhabitacionesComponent {
   onImagenSeleccionada(event: any) {
     const file = event.target.files[0];
     if (file) {
+      this.imagenParaSubir = file;
+
       const reader = new FileReader();
       reader.onload = () => {
         this.tipoHabitacion.imagen = reader.result as string;
@@ -167,8 +185,40 @@ export class AdministrarhabitacionesComponent {
     }
   }
 
-  habitacionesPorTipo(tipo: string): any[] {
-    return this.habitaciones.filter(h => h.TipoHabitacion === tipo);
+  habitacionesPorTipo(tipo: number): any[] {
+    return this.habitaciones.filter(h => h.IdTipoHabitacion === tipo);
+  }
+
+  cargarHabitaciones() {
+    this.http.get<any[]>(this.apiUrl).subscribe({
+      next: data => {
+        this.habitaciones = data;
+        this.cargando = false;
+      },
+      error: err => {
+        console.error(err);
+        this.error = 'No se pudo cargar el estado de las habitaciones.';
+        this.cargando = false;
+      }
+    });
+  }
+
+  subirImagen() {
+    const formData = new FormData();
+    if (this.imagenParaSubir) {
+      formData.append('image', this.imagenParaSubir);
+    }
+    return this.http.post<any>(`${this.apiUrlImgBB}?key=${this.apiKeyImgBB}`, formData);
+  }
+
+  cerrarModalNotificacion() {
+    this.cerrandoNotificacion = true;
+  }
+
+  abrirModalNotificacion(titulo: string, mensaje: string) {
+    this.tituloNotificacion = titulo;
+    this.mensajeNotificacion = mensaje;
+    this.mostrarNotificacion = true;
   }
 
 }
