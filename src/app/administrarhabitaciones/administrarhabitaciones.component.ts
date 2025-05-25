@@ -19,7 +19,7 @@ export class AdministrarhabitacionesComponent {
   tiposDeHabitaciones: any[] = [];
   cargando = true;
   error = '';
-  
+
   tipoSeleccionado: any = null;
   mostrarModal = false;
   cargandoAccion = false;
@@ -30,16 +30,23 @@ export class AdministrarhabitacionesComponent {
   mostrarNotificacion = false;
   cerrandoNotificacion = false;
 
-  tipoHabitacion = {
-    idTipoHabitacion: null,
-    nombre: '',
-    descripcion: '',
-    precio: 0,
-    imagen: ''
-  };
+  tipoHabitacion: {
+    idTipoHabitacion: number | null,
+    nombre: string,
+    descripcion: string,
+    precio: number,
+    imagen: string
+  } = {
+      idTipoHabitacion: null,
+      nombre: '',
+      descripcion: '',
+      precio: 0,
+      imagen: ''
+    };
 
   private apiUrl = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Habitacion/VerEstadoHabitacionesHoy';
   private urlCargarTipoHabitaciones = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/TipoHabitacion/ObtenerOfertas';
+  private urlActualizarTipoHabitaciones = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/TipoHabitacion/ActualizarDatosHabitacion';
 
   constructor(private http: HttpClient) { }
 
@@ -49,7 +56,7 @@ export class AdministrarhabitacionesComponent {
 
     this.http.get<any[]>(this.apiUrl).subscribe({
       next: data => {
-        this.habitaciones=data;
+        this.habitaciones = data;
         this.habitacionesEstandar = data.filter(h => h.TipoHabitacion === 'Habitación estandar');
         this.habitacionesJunior = data.filter(h => h.TipoHabitacion === 'Junior');
         this.cargando = false;
@@ -101,7 +108,40 @@ export class AdministrarhabitacionesComponent {
   }
 
   actualizarTipoHabitacion() {
+    this.cargandoAccion = true;
+    this.mensajeErrorModal = '';
 
+    if (!this.tipoHabitacion.nombre || !this.tipoHabitacion.descripcion || this.tipoHabitacion.precio <= 0) {
+      this.mensajeErrorModal = 'Por favor, complete todos los campos correctamente.';
+      this.cargandoAccion = false;
+      return;
+    }
+
+    const datos = {
+      idTipoHabitacion: this.tipoHabitacion.idTipoHabitacion,
+      nombre: this.tipoHabitacion.nombre,
+      descripcion: this.tipoHabitacion.descripcion,
+      precio: this.tipoHabitacion.precio,
+      imagen: 'https://s3.amazonaws.com/static-webstudio-accorhotels-usa-1.wp-ha.fastbooking.com/wp-content/uploads/sites/19/2022/01/06193833/DUF_4113-v-ok-1-1170x780.jpg'
+    }
+
+    this.http.put(this.urlActualizarTipoHabitaciones, datos, { responseType: 'text' }).subscribe({
+      next: () => {
+        this.cerrarModal();
+        this.cargandoAccion = false;
+        this.mostrarNotificacion = true;
+        this.cargarTiposDeHabitaciones();
+        setTimeout(() => {
+          this.mostrarNotificacion = false;
+        }, 3000);
+        this.cerrarModal();
+      },
+      error: (error) => {
+        console.error(error);
+        this.mensajeErrorModal = 'No se pudo actualizar el tipo de habitación.';
+        this.cargandoAccion = false;
+      }
+    });
   }
 
   onAnimationEnd(tipo: 'modal' | 'Notificacion' | 'Confirmacion') {
@@ -128,7 +168,7 @@ export class AdministrarhabitacionesComponent {
   }
 
   habitacionesPorTipo(tipo: string): any[] {
-  return this.habitaciones.filter(h => h.TipoHabitacion === tipo);
-}
+    return this.habitaciones.filter(h => h.TipoHabitacion === tipo);
+  }
 
 }
