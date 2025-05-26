@@ -27,7 +27,10 @@
           <tr *ngFor="let h of habitacionesPorTipo(tipo.idTipoHabitacion)">
             <td data-label="Nº Habitación"><span>{{ h.NumeroHabitacion }}</span></td>
             <td data-label="Tipo">
-              <input type="checkbox" [checked]="h.Estado !== 'Deshabilitada'" />
+              <label class="checkbox-tabla">
+                <input type="checkbox" [checked]="h.Estado !== 'Deshabilitada'" />
+                <span class="checkmark"></span>
+              </label>
             </td>
           </tr>
         </tbody>
@@ -99,8 +102,7 @@
       <div class="modal-footer">
         <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
 
-        <button class="btn-confirm" (click)="actualizarTipoHabitacion()"
-          [disabled]="cargandoAccion">
+        <button class="btn-confirm" (click)="actualizarTipoHabitacion()" [disabled]="cargandoAccion">
           <ng-container *ngIf="!cargandoAccion">{{'Actualizar'}}</ng-container>
           <div *ngIf="cargandoAccion" class="cargando"></div>
         </button>
