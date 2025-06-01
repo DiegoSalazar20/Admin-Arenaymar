@@ -535,13 +535,11 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
     font-weight: bold;
   }
 
-  // ✖ cuando NO está marcado
   input:not(:checked) ~ .checkmark::after {
     content: "✖";
     padding-bottom: 1px;
   }
 
-  // ✓ cuando SÍ está marcado
   input:checked ~ .checkmark {
     background-color: #4caf50;
     border-color: #4caf50;
@@ -553,7 +551,6 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
     content: "✓";
   }
 
-  // Hover opcional
   &:hover .checkmark {
     background-color: #e21c19;
   }
