@@ -1,9 +1,124 @@
 <div class="container">
-    <app-menuadmin> </app-menuadmin>
+    <app-menuadmin></app-menuadmin>
+
     <section class="main-content">
-        <div class="homeadmin-contenido">
-            <h2 class="titulo-admin">listadoreservas works!</h2>
+        <h2>Listado de reservaciones</h2>
+        <br>
+        <div *ngIf="cargando" class="mensaje-info">Cargando...</div>
+        <div *ngIf="error" class="mensaje-error">{{ error }}</div>
+
+        <div class="table-responsive" *ngIf="reservas.length">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id reserva</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Tarjeta</th>
+                        <th>Transacción</th>
+                        <th>Llegada</th>
+                        <th>Salida</th>
+                        <th>Tipo</th>
+                        <th>Ver detalles</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let reserva of reservas">
+                        <td>{{ reserva.IdReserva }}</td>
+                        <td>{{ reserva.Nombre }}</td>
+                        <td>{{ reserva.Apellidos }}</td>
+                        <td>{{ reserva.Email }}</td>
+                        <td>{{ reserva.Tarjeta }}</td>
+                        <td>{{ reserva.NumeroTransaccion }}</td>
+                        <td>{{ reserva.FechaLlegada | date:'dd-MM-yyyy' }}</td>
+                        <td>{{ reserva.FechaSalida | date:'dd-MM-yyyy' }}</td>
+                        <td>{{ reserva.TipoHabitacionNombre }}</td>
+                        <td>
+                            <div class="acciones-botones">
+                                <button (click)="abrirModal(reserva)" class="btn-accion editar">
+                                    <i class="fa-regular fa-eye"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="acciones-botones">
+                                <button (click)="eliminarReserva(reserva)" class="btn-accion eliminar">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+
+
+        <div *ngIf="!cargando && !error && !reservas.length" class="mensaje-info">
+            No hay registros de reservas para hoy.
+
+        </div>
+
     </section>
+</div>
+
+<div class="modal-backdrop" *ngIf="mostrarModal">
+
+  <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoModal }" (animationend)="onAnimationEnd('modal')">
+
+    <div class="modal-body">
+
+      <div class="modal-titulo-row">
+        <h3>Listado de Reservaciones - Ver Reserva</h3>
+        <button class="close-button" (click)="cerrarModal()">×</button>
+      </div>
+
+      <div class="modal-editor">
+        <div class="editor-contenido datos-reserva">
+          <p><strong>ID Reserva:</strong> {{ reservaSeleccionada.CodigoReserva }}</p>
+          <p><strong>Nombre:</strong> {{ reservaSeleccionada.Nombre }}</p>
+          <p><strong>Apellidos:</strong> {{ reservaSeleccionada.Apellidos }}</p>
+          <p><strong>Email:</strong> {{ reservaSeleccionada.Email }}</p>
+          <p><strong>Tarjeta:</strong> ************{{ reservaSeleccionada.Tarjeta }}</p>
+          <p><strong>Transacción:</strong> {{ reservaSeleccionada.NumeroTransaccion }}</p>
+          <p><strong>Fecha Llegada:</strong> {{ reservaSeleccionada.FechaLlegada | date: 'dd/MM/yyyy' }}</p>
+          <p><strong>Fecha Salida:</strong> {{ reservaSeleccionada.FechaSalida | date: 'dd/MM/yyyy' }}</p>
+          <p><strong>Tipo:</strong> {{ reservaSeleccionada.TipoHabitacionNombre }}</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-accion eliminar" (click)="eliminarReserva(reservaSeleccionada)">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+        <button class="btn-accion editar">
+          <i class="fas fa-file-download"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-backdrop confirmacion" *ngIf="mostrarConfirmacion">
+    <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoConfirmacion }"
+        (animationend)="cerrandoConfirmacion && onAnimationEnd('Confirmacion')">
+
+        <div class="modal-header">
+            <h2>{{ tituloConfirmacion }}</h2>
+            <button class="close-button" (click)="cerrarModalConfirmacion()">×</button>
+        </div>
+
+        <div class="modal-body">
+            <p>{{ mensajeConfirmacion }}</p>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="cerrarModalConfirmacion()">Cancelar</button>
+            <button class="btn-confirm" (click)="confirmarEliminarOferta()">Eliminar</button>
+        </div>
+    </div>
 </div>
 
