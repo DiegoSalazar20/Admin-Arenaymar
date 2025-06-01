@@ -1,64 +1,80 @@
 <div class="container">
-    <app-menuadmin></app-menuadmin>
+  <app-menuadmin></app-menuadmin>
 
-    <section class="main-content">
-        <div class="formulario-reserva">
-            <h2>Modificar páginas</h2>
+  <section class="main-content">
+    <div class="formulario-reserva">
+      <h2>Modificar páginas</h2>
 
-            <div class="form-group">
-                <select class="form-control" [(ngModel)]="paginaSeleccionada">
-                    <option value="" disabled selected>Seleccione una página</option>
-                    <option value="home">Home</option>
-                    <option value="sobre-nosotros">Sobre Nosotros</option>
-                    <option value="facilidades">Facilidades</option>
-                    <option value="como-llegar">Cómo llegar</option>
-                </select>
-            </div>
+      <div class="form-group">
+        <select class="form-control" [(ngModel)]="paginaSeleccionada">
+          <option value="" disabled selected>Seleccione una página</option>
+          <option value="home">Home</option>
+          <option value="sobre-nosotros">Sobre Nosotros</option>
+          <option value="facilidades">Facilidades</option>
+          <option value="como-llegar">Cómo llegar</option>
+        </select>
+      </div>
 
-            <button class="btn btn-primary mt-2" (click)="abrirModal()" [disabled]="!paginaSeleccionada">
-                Modificar
-            </button>
-
-
-        </div>
-
-
-    </section>
+      <button class="btn btn-primary mt-2" (click)="abrirModal()" [disabled]="!paginaSeleccionada">
+        Modificar
+      </button>
+    </div>
+  </section>
 </div>
 
+
 <div class="modal-backdrop" *ngIf="modificarSobrenosotros">
+  <div
+    class="modal-container"
+    [ngClass]="{ 'cerrando': cerrandoModalSobreNosotros }"
+    (animationend)="onAnimationEnd('modalSobreNosotros')"
+  >
+    <div class="modal-body">
+      <div class="modal-titulo-row">
+        <h3>Modificar página Sobre Nosotros</h3>
+        <br />
+      </div>
 
-    <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoModalSobreNosotros }" (animationend)="onAnimationEnd('modalSobreNosotros')">
-
-        <div class="modal-body">
-
-            <div class="modal-titulo-row">
-                <h3>Modificar página sobre nosotros</h3>
-
-                <br>
-
-            </div>
-
-            <div class="modal-editor">
-                <div class="editor-header">
-                    <span>Editar descripción</span>
-                    <button class="btn-lapiz">✎</button>
-                </div>
-                <div class="editor-contenido">
-                    <textarea [(ngModel)]="sobreNosotros.texto" rows="6" class="textarea-estilizada"></textarea>
-                </div>
-            </div>
-
-
-            <div class="modal-footer">
-                <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
-
-                <button class="btn-confirm" [disabled]="cargandoAccion">
-                    <ng-container *ngIf="!cargandoAccion">{{'Actualizar'}}</ng-container>
-                    <div *ngIf="cargandoAccion" class="cargando"></div>
-                </button>
-            </div>
+      <div class="modal-editor">
+        <div class="editor-header">
+          <span>Editar descripción</span>
+          <button class="btn-lapiz">✎</button>
         </div>
+        <div class="editor-contenido">
+          <textarea [(ngModel)]="sobreNosotros.texto" rows="6" class="textarea-estilizada"></textarea>
+        </div>
+      </div>
 
+      <div *ngIf="mensajeError" class="mensaje-error">{{ mensajeError }}</div>
+      <div *ngIf="mensajeInfo" class="mensaje-info">{{ mensajeInfo }}</div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+        <button class="btn-confirm" (click)="actualizarSobreNosotros()" [disabled]="cargandoAccion">
+          <ng-container *ngIf="!cargandoAccion">Actualizar</ng-container>
+          <div *ngIf="cargandoAccion" class="cargando"></div>
+        </button>
+      </div>
     </div>
+  </div>
+</div>
+
+
+<div class="modal-backdrop" *ngIf="mostrarNotificacion">
+  <div
+    class="modal-container"
+    [ngClass]="{ 'cerrando': cerrandoNotificacion }"
+    (animationend)="cerrandoNotificacion && onAnimationEnd('Notificacion')"
+  >
+    <div class="modal-header">
+      <h2>{{ tituloNotificacion }}</h2>
+      <button class="close-button" (click)="cerrarModalNotificacion()">×</button>
+    </div>
+    <div class="modal-body">
+      <p>{{ mensajeNotificacion }}</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-confirm" (click)="cerrarModalNotificacion()">Aceptar</button>
+    </div>
+  </div>
 </div>

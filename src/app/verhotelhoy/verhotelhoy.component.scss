@@ -160,3 +160,71 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
     font-size: 0.9rem;
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .main-content, 
+  .main-content * {
+    visibility: visible;
+  }
+
+  .main-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: white;
+    color: black;
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: black;
+  }
+
+  .fecha-hoy {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: black;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+  }
+
+  th {
+    background-color: #7D9D9C;
+    color: #FFFFFF;
+    padding: 12px 16px;
+    border-bottom: 1px solid #E4DCCF;
+  }
+
+  td {
+    background-color: #7D9D9C;
+    color: #FFFFFF;
+    padding: 12px 16px;
+    border-bottom: 1px solid #E4DCCF;
+    transition: all 0.3s ease;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #6c8b8a;
+  }
+
+  .btn-imprimir,
+  app-menuadmin {
+    display: none !important;
+  }
+}
+
+
