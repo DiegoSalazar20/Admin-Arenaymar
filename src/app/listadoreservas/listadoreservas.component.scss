@@ -361,3 +361,18 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
     font-size: 0.9rem;
   }
 }
+
+.cerrando {
+  animation: fadeOutConfirmacion 0.3s forwards;
+}
+
+@keyframes fadeOutConfirmacion {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}

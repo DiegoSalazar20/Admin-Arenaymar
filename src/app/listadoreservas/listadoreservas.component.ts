@@ -43,8 +43,8 @@ export class ListadoreservasComponent implements OnInit {
     this.cargarReservas();
   }
 
-  cargarReservas(){
-    this.reservas=[];
+  cargarReservas() {
+    this.reservas = [];
     this.http.get<any[]>(this.apiUrlReservas).subscribe({
       next: data => {
         this.reservas = data;
@@ -82,8 +82,16 @@ export class ListadoreservasComponent implements OnInit {
   }
 
   cerrarModalConfirmacion() {
-    this.cerrandoConfirmacion = true;
-    this.reservaSeleccionada = null;
+    if (!this.cerrandoConfirmacion) {
+      this.cerrandoConfirmacion = true;
+
+      setTimeout(() => {
+        if (this.cerrandoConfirmacion) {
+          this.cerrandoConfirmacion = false;
+          this.mostrarConfirmacion = false;
+        }
+      }, 300);
+    }
   }
 
   abrirModalNotificacion(titulo: string, mensaje: string) {
@@ -109,19 +117,25 @@ export class ListadoreservasComponent implements OnInit {
   }
 
   onAnimationEnd(tipo: 'modal' | 'Notificacion' | 'Confirmacion') {
-    if (tipo === 'modal' && this.cerrandoModal) {
-      this.cerrandoModal = false;
-      this.mostrarModal = false;
+    if (tipo === 'modal') {
+      if (this.cerrandoModal) {
+        this.cerrandoModal = false;
+        this.mostrarModal = false;
+      }
     }
 
-    if (tipo === 'Confirmacion' && this.cerrandoConfirmacion) {
-      this.cerrandoConfirmacion = false;
-      this.mostrarConfirmacion = false;
+    if (tipo === 'Confirmacion') {
+      if (this.cerrandoConfirmacion) {
+        this.cerrandoConfirmacion = false;
+        this.mostrarConfirmacion = false;
+      }
     }
 
-    if (tipo === 'Notificacion' && this.cerrandoNotificacion) {
-      this.cerrandoNotificacion = false;
-      this.mostrarNotificacion = false;
+    if (tipo === 'Notificacion') {
+      if (this.cerrandoNotificacion) {
+        this.cerrandoNotificacion = false;
+        this.mostrarNotificacion = false;
+      }
     }
   }
 
