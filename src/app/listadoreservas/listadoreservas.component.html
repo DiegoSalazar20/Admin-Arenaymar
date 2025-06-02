@@ -122,3 +122,18 @@
     </div>
 </div>
 
+<div class="modal-backdrop" *ngIf="mostrarNotificacion">
+    <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoNotificacion }"
+        (animationend)="cerrandoNotificacion && onAnimationEnd('Notificacion')">
+        <div class="modal-header">
+            <h2>{{ tituloNotificacion }}</h2>
+            <button class="close-button" (click)="cerrarModalNotificacion()">×</button>
+        </div>
+        <div class="modal-body">
+            <p>{{ mensajeNotificacion }}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-confirm" (click)="cerrarModalNotificacion()">Aceptar</button>
+        </div>
+    </div>
+</div>

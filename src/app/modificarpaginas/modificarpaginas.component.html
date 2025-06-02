@@ -14,21 +14,20 @@
           <option value="como-llegar">Cómo llegar</option>
         </select>
       </div>
-
-      <button class="btn btn-primary mt-2" (click)="abrirModal()" [disabled]="!paginaSeleccionada">
-        Modificar
-      </button>
+      <br>
+      <div class="boton-centrado">
+        <button class="btn btn-primary mt-2" (click)="abrirModal()" [disabled]="!paginaSeleccionada">
+          Modificar
+        </button>
+      </div>
     </div>
   </section>
 </div>
 
 
 <div class="modal-backdrop" *ngIf="modificarSobrenosotros">
-  <div
-    class="modal-container"
-    [ngClass]="{ 'cerrando': cerrandoModalSobreNosotros }"
-    (animationend)="onAnimationEnd('modalSobreNosotros')"
-  >
+  <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoModalSobreNosotros }"
+    (animationend)="onAnimationEnd('modalSobreNosotros')">
     <div class="modal-body">
       <div class="modal-titulo-row">
         <h3>Modificar página Sobre Nosotros</h3>
@@ -61,11 +60,8 @@
 
 
 <div class="modal-backdrop" *ngIf="mostrarNotificacion">
-  <div
-    class="modal-container"
-    [ngClass]="{ 'cerrando': cerrandoNotificacion }"
-    (animationend)="cerrandoNotificacion && onAnimationEnd('Notificacion')"
-  >
+  <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoNotificacion }"
+    (animationend)="cerrandoNotificacion && onAnimationEnd('Notificacion')">
     <div class="modal-header">
       <h2>{{ tituloNotificacion }}</h2>
       <button class="close-button" (click)="cerrarModalNotificacion()">×</button>

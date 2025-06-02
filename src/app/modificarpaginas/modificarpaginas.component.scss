@@ -250,6 +250,47 @@ button:hover::after {
   margin: 0 auto;
 }
 
+button {
+  position: relative;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #3F5B62;
+  color: #EEEEEE;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  transform: translateX(-50%);
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(to right, #D69955, #F8DAA8);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  background-color: #576F72;
+}
+
+button:hover::after {
+  width: 80%;
+}
+
+.boton-centrado {
+  display: flex;
+  justify-content: center;
+}
+
+
 @keyframes cargar {
   to {
     transform: rotate(360deg);
