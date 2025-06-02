@@ -64,7 +64,7 @@ export class ModificarpaginasComponent {
       texto: this.sobreNosotros.texto
     };
 
-    this.http.put('http://arenaymar.somee.com/api/SobreNosotros', cuerpo).subscribe({
+    this.http.put('https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/SobreNosotros', cuerpo).subscribe({
       next: () => {
         this.cargandoAccion = false;
         this.cerrarModal();
