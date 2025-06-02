@@ -116,6 +116,10 @@ export class ListadoreservasComponent implements OnInit {
     });
   }
 
+  cerrarModalNotificacion() {
+    this.cerrandoNotificacion = true;
+  }
+
   onAnimationEnd(tipo: 'modal' | 'Notificacion' | 'Confirmacion') {
     if (tipo === 'modal') {
       if (this.cerrandoModal) {

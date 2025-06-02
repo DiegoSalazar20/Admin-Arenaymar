@@ -170,18 +170,61 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
   text-align: center;
 }
 
+.btn-agregar {
+  background-color: #28a745;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  transition: transform 0.2s ease;
+}
+
+.btn-agregar:hover {
+  transform: scale(1.1);
+  background-color: #218838;
+}
+
+
 .btn-accion {
   border: none;
-  background: none;
   cursor: pointer;
-  font-size: 1.5rem;
-  padding: 0.3rem 0.4rem;
+  font-size: 1.1rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  transition: transform 0.2s ease;
+}
+
+.btn-accion i {
+  pointer-events: none;
 }
 
 .btn-accion.editar {
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 6px;
+  background-color: #3498db ;
+  color: #EEEEEE;
+}
+
+.btn-accion.editar:hover {
+  transform: scale(1.1);
+  background-color: #2980b9 ;
+}
+
+.btn-accion.eliminar {
+  background-color: #C0392B;
+  color: #FFFFFF;
+}
+
+.btn-accion.eliminar:hover {
+  transform: scale(1.1);
+  background-color: #E74C3C;
 }
 
 .modal-backdrop {

@@ -164,16 +164,15 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
 
 .btn-agregar {
   background-color: #28a745;
-  color: white;
-  font-size: 1.5rem;
-  width: 50px;
-  height: 50px;
   border: none;
   cursor: pointer;
-  display: flex;
+  font-size: 1.1rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
   transition: transform 0.2s ease;
 }
 
@@ -183,32 +182,48 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
 }
 
 
-.acciones-botones {
-  display: flex;
-  gap: 1px;
-  justify-content: center;
+.btn-accion {
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
-
-
-.btn-accion {
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    margin-left: 0.5rem;
-    margin-right:0.5rem;
+.btn-accion i {
+  pointer-events: none;
 }
 
 .btn-accion.editar {
-  background-color: #007bff;
-    color: #fff;
+  background-color: #3498db ;
+  color: #EEEEEE;
+}
+
+.btn-accion.editar:hover {
+  transform: scale(1.1);
+  background-color: #2980b9 ;
 }
 
 .btn-accion.eliminar {
-  background-color: #dc3545;
-    color: #fff;
+  background-color: #C0392B;
+  color: #FFFFFF;
+}
+
+.btn-accion.eliminar:hover {
+  transform: scale(1.1);
+  background-color: #E74C3C;
+}
+
+.acciones-botones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .modal-backdrop {
@@ -388,7 +403,6 @@ button {
     transform: translateX(-50%);
     width: 0%;
     height: 3px;
-    background: linear-gradient(to right, #f7bf7a, #CFB997);
     border-radius: 2px;
     transition: width 0.3s ease;
   }
