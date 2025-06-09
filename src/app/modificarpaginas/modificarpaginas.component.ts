@@ -16,10 +16,19 @@ export class ModificarpaginasComponent {
   modificarSobrenosotros: boolean = false;
   cerrandoModalSobreNosotros: boolean = false;
 
+  modificarHome: boolean = false;
+  cerrandoModalHome: boolean = false;
+
   sobreNosotros: any = {
     id: '',
     texto: ''
   };
+
+  home: any = {
+    idHome: '',
+    imagen: '',
+    contenido: ''
+  }
 
   cargandoAccion: boolean = false;
   mensajeError: string = '';
@@ -31,6 +40,7 @@ export class ModificarpaginasComponent {
   mensajeNotificacion = '';
 
   private urlSobreNosotros = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/SobreNosotros';
+  private urlHome = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Home';
 
   constructor(private http: HttpClient) { }
 
@@ -38,6 +48,9 @@ export class ModificarpaginasComponent {
     if (this.paginaSeleccionada === 'sobre-nosotros') {
       this.obtenerSobreNosotros();
       this.modificarSobrenosotros = true;
+    } else if (this.paginaSeleccionada === 'home') {
+      this.obtenerHome();
+      this.modificarHome = true;
     } else {
       console.log('Página no implementada aún');
     }
@@ -51,6 +64,19 @@ export class ModificarpaginasComponent {
       },
       error: (err) => {
         console.error('Error al obtener la información de Sobre Nosotros', err);
+      }
+    });
+  }
+
+  obtenerHome() {
+    this.http.get<any>(this.urlHome).subscribe({
+      next: (data) => {
+        this.home.idHome = data.idHome;
+        this.home.imagen = data.imagen;
+        this.home.contenido = data.contenido;
+      },
+      error: (err) => {
+        console.error('Error al obtener la información de Home', err);
       }
     });
   }
@@ -78,8 +104,33 @@ export class ModificarpaginasComponent {
     });
   }
 
+  actualizarHome() {
+    this.mensajeError = '';
+    this.cargandoAccion = true;
+
+    const cuerpo = {
+      id: this.home.idHome,
+      imagen: 'https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg',
+      contenido: this.home.contenido
+    };
+
+    this.http.put('https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Home', cuerpo).subscribe({
+      next: () => {
+        this.cargandoAccion = false;
+        this.cerrarModal();
+        this.abrirModalNotificacion('Actualizado', 'Texto actualizado correctamente.');
+      },
+      error: (err) => {
+        console.error('Error al actualizar:', err);
+        this.abrirModalNotificacion('Error', 'Ocurrió un error al actualizar el texto.');
+        this.cargandoAccion = false;
+      }
+    });
+  }
+
   cerrarModal() {
     this.cerrandoModalSobreNosotros = true;
+    this.cerrandoModalHome = true;
   }
 
   cerrarModalNotificacion() {
@@ -92,19 +143,24 @@ export class ModificarpaginasComponent {
     this.mostrarNotificacion = true;
   }
 
- onAnimationEnd(tipo: 'modalSobreNosotros' | 'Notificacion' | 'Confirmacion') {
-  if (tipo === 'modalSobreNosotros' && this.cerrandoModalSobreNosotros) {
-    this.cerrandoModalSobreNosotros = false;
-    this.modificarSobrenosotros = false;
-  }
+  onAnimationEnd(tipo: 'modalSobreNosotros' | 'Notificacion' | 'Confirmacion' | 'modalHome') {
+    if (tipo === 'modalSobreNosotros' && this.cerrandoModalSobreNosotros) {
+      this.cerrandoModalSobreNosotros = false;
+      this.modificarSobrenosotros = false;
+    }
 
-  if (tipo === 'Notificacion' && this.cerrandoNotificacion) {
-    this.cerrandoNotificacion = false;
-    this.mostrarNotificacion = false;
+    if (tipo === 'modalHome' && this.cerrandoModalHome) {
+      this.cerrandoModalHome = false;
+      this.modificarHome = false;
+    }
+
+    if (tipo === 'Notificacion' && this.cerrandoNotificacion) {
+      this.cerrandoNotificacion = false;
+      this.mostrarNotificacion = false;
+    }
+    if (tipo === 'Confirmacion') {
+
+    }
   }
-  if (tipo === 'Confirmacion') {
-  
-  }
-}
 
 }
