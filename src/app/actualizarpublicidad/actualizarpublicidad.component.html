@@ -1,9 +1,147 @@
 <div class="container">
-    <app-menuadmin> </app-menuadmin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <app-menuadmin></app-menuadmin>
+
     <section class="main-content">
-        <div class="homeadmin-contenido">
-            <h2 class="titulo-admin">actualizarpublicidad works!</h2>
-        </div>
+        <h2>Gestionar publicidad</h2>
+
+        <div *ngIf="cargando" class="mensaje-info">Cargando...</div>
+        <div *ngIf="!cargando && publicidades.length === 0" class="mensaje-info">No hay publicidades registradas.</div>
+
+        <button (click)="abrirFormularioNuevaOferta()" class="btn-agregar">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+
+        <table class="table-responsive" *ngIf="publicidades.length">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Url destino</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of publicidades">
+                    <td data-label="Nombre">{{ p.nombre }}</td>
+                    <td data-label="Descripción">{{ p.descripcion }}</td>
+                    <td data-label="Url destino">{{ p.urlDestino }}</td>
+                    <td data-label="Imagen"> <img class="imagenPublicidad" src="{{ p.urlImagen }}"></td>
+                    <td data-label="Acciones">
+                        <div class="acciones-botones">
+                            <button (click)="editarOferta(p)" class="btn-accion editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+
+                            <button (click)="habilitarPublicidad(p.id)" class="btn-accion eliminar" *ngIf="!p.visible">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </button>
+
+                            <button (click)="deshabilitarPublicidad(p.id)" class="btn-accion visible" *ngIf="p.visible">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+
+                        </div>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
     </section>
 </div>
 
+
+<div class="modal-backdrop" *ngIf="mostrarModal">
+    <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoModal }"
+        (animationend)="cerrandoModal && onAnimationEnd('modal')">
+
+        <div class="modal-header">
+            <h2>{{ modoEdicion ? 'Actualizar publicidad' : 'Nueva publicidad' }}</h2>
+            <button class="close-button" (click)="cerrarModal()">×</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="modal-field">
+                <label for="nombreOferta">Nombre:</label>
+                <input id="nombreOferta" type="text" [(ngModel)]="publicidad.nombre" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]*"
+                    maxlength="50" (keypress)="validarTexto($event)" />
+
+            </div>
+
+            <div class="modal-field">
+                <label for="descripcion">Descripción:</label>
+                <input id="descripcion" type="text" [(ngModel)]="publicidad.descripcion" />
+            </div>
+
+            <div class="modal-field">
+                <label for="urlDestino">Url destino:</label>
+                <input id="urlDestino" type="text" [(ngModel)]="publicidad.urlDestino" />
+            </div>
+
+            <div class="modal-imagenes">
+                <div class="imagen-actual">
+                    <label *ngIf="publicidad.urlImagen">Imagen actual</label>
+                    <div class="imagen-preview" *ngIf="publicidad.urlImagen">
+                        <img [src]="publicidad.urlImagen" alt="Imagen actual" />
+                    </div>
+                </div>
+
+                <div class="subir-imagen">
+                    <label>Subir nueva imagen</label>
+                    <div class="input-upload">
+                        <input type="file" (change)="onImagenSeleccionada($event)" accept="image/*" />
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="mensajeErrorModal" class="modal-error">{{ mensajeErrorModal }}</div>
+            
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+            <button class="btn-confirm" (click)="modoEdicion ? actualizarOferta() : registrarPublicidad()"
+                [disabled]="cargandoAccion">
+                <ng-container *ngIf="!cargandoAccion">{{ modoEdicion ? 'Actualizar' : 'Registrar' }}</ng-container>
+                <div *ngIf="cargandoAccion" class="cargando"></div>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-backdrop" *ngIf="mostrarNotificacion">
+    <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoNotificacion }"
+        (animationend)="cerrandoNotificacion && onAnimationEnd('Notificacion')">
+        <div class="modal-header">
+            <h2>{{ tituloNotificacion }}</h2>
+            <button class="close-button" (click)="cerrarModalNotificacion()">×</button>
+        </div>
+        <div class="modal-body">
+            <p>{{ mensajeNotificacion }}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-confirm" (click)="cerrarModalNotificacion()">Aceptar</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-backdrop" *ngIf="mostrarConfirmacion">
+    <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoConfirmacion }"
+        (animationend)="cerrandoConfirmacion && onAnimationEnd('Confirmacion')">
+
+        <div class="modal-header">
+            <h2>{{ tituloConfirmacion }}</h2>
+            <button class="close-button" (click)="cerrarModalConfirmacion()">×</button>
+        </div>
+        <div class="modal-body">
+            <p>{{ mensajeConfirmacion }}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" (click)="cerrarModalConfirmacion()">Cancelar</button>
+            <button class="btn-confirm" (click)="confirmarEliminarOferta()">Eliminar</button>
+        </div>
+    </div>
+</div>
