@@ -190,18 +190,21 @@ export class AdministrarhabitacionesComponent {
   }
 
   cargarHabitaciones() {
-    this.http.get<any[]>(this.apiUrl).subscribe({
-      next: data => {
-        this.habitaciones = data;
-        this.cargando = false;
-      },
-      error: err => {
-        console.error(err);
-        this.error = 'No se pudo cargar el estado de las habitaciones.';
-        this.cargando = false;
-      }
-    });
-  }
+  this.http.get<any[]>(this.apiUrl).subscribe({
+    next: data => {
+      this.habitaciones = data.map(h => ({
+        ...h,
+        estadoTemporal: h.Estado !== 'Deshabilitada'
+      }));
+      this.cargando = false;
+    },
+    error: err => {
+      console.error(err);
+      this.error = 'No se pudo cargar el estado de las habitaciones.';
+      this.cargando = false;
+    }
+  });
+}
 
   subirImagen() {
     const formData = new FormData();
@@ -220,5 +223,45 @@ export class AdministrarhabitacionesComponent {
     this.mensajeNotificacion = mensaje;
     this.mostrarNotificacion = true;
   }
+
+  cambiarEstadoHabitacion(habitacion: any) {
+  const numero = habitacion.NumeroHabitacion;
+  const estadoAnterior = habitacion.Estado !== 'Deshabilitada';
+  const nuevoEstadoVisual = habitacion.estadoTemporal;
+
+  if (estadoAnterior === nuevoEstadoVisual) return;
+
+  const url = nuevoEstadoVisual
+    ? `https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Habitacion/Habilitar?idHabitacion=${numero}`
+    : `https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Habitacion/Deshabilitar?idHabitacion=${numero}`;
+
+  this.http.put<boolean>(url, {}).subscribe({
+    next: (respuesta) => {
+      if (respuesta === true) {
+        habitacion.Estado = nuevoEstadoVisual ? 'Disponible' : 'Deshabilitada';
+        this.abrirModalNotificacion(
+          'Estado actualizado',
+          `La habitación fue ${nuevoEstadoVisual ? 'habilitada' : 'deshabilitada'} correctamente.`
+        );
+      } else {
+        habitacion.estadoTemporal = estadoAnterior;
+        this.abrirModalNotificacion(
+          'No se pudo cambiar el estado',
+          `La habitación no pudo ser ${nuevoEstadoVisual ? 'habilitada' : 'deshabilitada'} porque está ocupada o reservada.`
+        );
+      }
+    },
+    error: err => {
+      console.error(err);
+      habitacion.estadoTemporal = estadoAnterior;
+      this.abrirModalNotificacion(
+        'Error de red',
+        `Error al intentar ${nuevoEstadoVisual ? 'habilitar' : 'deshabilitar'} la habitación. Inténtelo de nuevo.`
+      );
+    }
+  });
+}
+
+
 
 }
