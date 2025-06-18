@@ -28,7 +28,7 @@
             <td data-label="Nº Habitación"><span>{{ h.NumeroHabitacion }}</span></td>
             <td data-label="Tipo">
               <label class="checkbox-tabla">
-                <input type="checkbox" [checked]="h.Estado !== 'Deshabilitada'" />
+                <input type="checkbox" [(ngModel)]="h.estadoTemporal" (change)="cambiarEstadoHabitacion(h)" />
                 <span class="checkmark"></span>
               </label>
             </td>
