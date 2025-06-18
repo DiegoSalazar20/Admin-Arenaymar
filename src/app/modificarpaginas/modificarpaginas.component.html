@@ -72,7 +72,31 @@
           <button class="btn-lapiz">✎</button>
         </div>
         <div class="editor-contenido">
-          <textarea [(ngModel)]="home.contenido" rows="6" class="textarea-estilizada"></textarea>
+          <textarea [(ngModel)]="home.contenido" rows="6" class="textarea-estilizada"
+            (blur)="homeDescripcionTocado = true" (input)="homeDescripcionTocado = true"></textarea>
+          <div *ngIf="homeDescripcionTocado && !home.contenido.trim()" class="mensaje-error">
+            La descripción no puede estar vacía.
+          </div>
+        </div>
+      </div>
+      <div class="modal-imagenes">
+        <div class="imagen-actual">
+          <label>Imagen actual</label>
+          <div class="imagen-preview">
+            <img [src]="home.imagen" alt="Imagen actual" *ngIf="!imagenHomePreview; else previewHome" />
+            <ng-template #previewHome>
+              <img [src]="imagenHomePreview" alt="Nueva imagen" />
+            </ng-template>
+          </div>
+        </div>
+        <div class="subir-imagen">
+          <label>Subir nueva imagen</label>
+          <div class="input-upload">
+            <input type="file" (change)="onImagenHomeSeleccionada($event)" accept="image/*" />
+            <button *ngIf="imagenHomePreview" type="button" class="btn-cancel"
+              (click)="eliminarImagenHome()">Eliminar</button>
+          </div>
+          <div *ngIf="imagenHomeError" class="mensaje-error">{{ imagenHomeError }}</div>
         </div>
       </div>
 
@@ -81,7 +105,7 @@
 
       <div class="modal-footer">
         <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
-        <button class="btn-confirm" (click)="actualizarHome()" [disabled]="cargandoAccion">
+        <button class="btn-confirm" (click)="actualizarHome()" [disabled]="cargandoAccion || !home.contenido.trim()">
           <ng-container *ngIf="!cargandoAccion">Actualizar</ng-container>
           <div *ngIf="cargandoAccion" class="cargando"></div>
         </button>

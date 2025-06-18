@@ -18,6 +18,10 @@ export class ModificarpaginasComponent {
 
   modificarHome: boolean = false;
   cerrandoModalHome: boolean = false;
+  imagenHomePreview: string | ArrayBuffer | null = null;
+  imagenHomeFile: File | null = null;
+  imagenHomeError: string | null = null;
+  homeDescripcionTocado: boolean = false;
 
   sobreNosotros: any = {
     id: '',
@@ -51,6 +55,7 @@ export class ModificarpaginasComponent {
     } else if (this.paginaSeleccionada === 'home') {
       this.obtenerHome();
       this.modificarHome = true;
+      this.homeDescripcionTocado = false;
     } else {
       console.log('Página no implementada aún');
     }
@@ -106,11 +111,22 @@ export class ModificarpaginasComponent {
 
   actualizarHome() {
     this.mensajeError = '';
+
+    if (!this.home.contenido || !this.home.contenido.trim()) {
+      this.mensajeError = 'La descripción no puede estar vacía.';
+      return;
+    }
+
     this.cargandoAccion = true;
+
+    let imagenEnviar = this.home.imagen;
+    if (this.imagenHomePreview) {
+      imagenEnviar = this.imagenHomePreview as string;
+    }
 
     const cuerpo = {
       id: this.home.idHome,
-      imagen: 'https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg',
+      imagen: imagenEnviar,
       contenido: this.home.contenido
     };
 
@@ -118,20 +134,46 @@ export class ModificarpaginasComponent {
       next: () => {
         this.cargandoAccion = false;
         this.cerrarModal();
-        this.abrirModalNotificacion('Actualizado', 'Texto actualizado correctamente.');
+        this.abrirModalNotificacion('Actualizado', 'Información actualizada correctamente.');
+        this.imagenHomePreview = null;
+        this.imagenHomeFile = null;
       },
       error: (err) => {
         console.error('Error al actualizar:', err);
-        this.abrirModalNotificacion('Error', 'Ocurrió un error al actualizar el texto.');
+        this.abrirModalNotificacion('Error', 'Ocurrió un error al actualizar la información.');
         this.cargandoAccion = false;
       }
     });
   }
 
-  cerrarModal() {
-    this.cerrandoModalSobreNosotros = true;
-    this.cerrandoModalHome = true;
+
+  onImagenHomeSeleccionada(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        this.imagenHomeError = 'El archivo seleccionado no es una imagen válida.';
+        return;
+      }
+      this.imagenHomeError = null;
+      this.imagenHomeFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagenHomePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
   }
+
+  eliminarImagenHome(): void {
+    this.imagenHomePreview = null;
+    this.imagenHomeFile = null;
+  }
+
+  cerrarModal() {
+  this.cerrandoModalSobreNosotros = true;
+  this.cerrandoModalHome = true;
+  this.homeDescripcionTocado = false;
+}
 
   cerrarModalNotificacion() {
     this.cerrandoNotificacion = true;
