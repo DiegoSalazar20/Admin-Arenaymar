@@ -89,6 +89,7 @@ export class ActualizarpublicidadComponent {
   }
 
   abrirFormularioNuevaOferta() {
+    this.mensajeErrorModal='';
     this.modoEdicion = false;
     this.publicidad = {
       id: 0,
@@ -102,6 +103,7 @@ export class ActualizarpublicidadComponent {
   }
 
   editarOferta(o: any) {
+    this.mensajeErrorModal='';
     this.modoEdicion = true;
     this.publicidad = {
       id: o.id,
@@ -137,6 +139,10 @@ export class ActualizarpublicidadComponent {
       errores.push('El campo "URL destino" no puede estar vacío.');
     } else if (!regexURL.test(this.publicidad.urlDestino)) {
       errores.push('El campo "URL destino" no tiene un formato válido.');
+    }
+
+    if (!this.imagenParaSubir) {
+      errores.push('Debe seleccionar una imagen para la publicidad.');
     }
 
     if (errores.length > 0) {
@@ -183,8 +189,31 @@ export class ActualizarpublicidadComponent {
 
   actualizarOferta() {
 
-    if (!this.publicidad.nombre || !this.publicidad.descripcion || !this.publicidad.urlDestino || !this.publicidad.urlImagen) {
-      this.mensajeErrorModal = 'Todos los campos son obligatorios.';
+    const errores: string[] = [];
+    this.mensajeErrorModal = '';
+    const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_\s/]+$/;
+    const regexURL = /^(https?:\/\/)?[\w\-]+(\.[\w\-]+)+[/#?]?.*$/;
+
+    if (!this.publicidad.nombre?.trim()) {
+      errores.push('El campo "Nombre" no puede estar vacío.');
+    } else if (!regexSinCaracteresEspeciales.test(this.publicidad.nombre)) {
+      errores.push('El campo "Nombre" tiene caracteres no permitidos.');
+    }
+
+    if (!this.publicidad.descripcion?.trim()) {
+      errores.push('El campo "Descripción" no puede estar vacío.');
+    } else if (!regexSinCaracteresEspeciales.test(this.publicidad.descripcion)) {
+      errores.push('El campo "Descripción" tiene caracteres no permitidos.');
+    }
+
+    if (!this.publicidad.urlDestino?.trim()) {
+      errores.push('El campo "URL destino" no puede estar vacío.');
+    } else if (!regexURL.test(this.publicidad.urlDestino)) {
+      errores.push('El campo "URL destino" no tiene un formato válido.');
+    }
+
+    if (errores.length > 0) {
+      this.mensajeErrorModal = errores.join('\n');
       return;
     }
 

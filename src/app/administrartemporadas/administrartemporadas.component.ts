@@ -121,15 +121,47 @@ export class AdministrartemporadasComponent {
   }
 
   actualizarTemporada() {
+    const errores: string[] = [];
+    this.mensajeErrorModal = '';
+
+    const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_%\s/]+$/;
     const desc = Number(this.temporada.descuento);
+
+    if (!this.temporada.nombre_temporada?.trim()) {
+      errores.push('El campo "Nombre de la temporada" no puede estar vacío.');
+    } else if (!regexSinCaracteresEspeciales.test(this.temporada.nombre_temporada)) {
+      errores.push('El campo "Nombre de la temporada" tiene caracteres no permitidos.');
+    }
+
+    if (!this.temporada.fecha_inicio?.trim()) {
+      errores.push('Debe seleccionar una fecha de inicio.');
+    }
+
+    if (!this.temporada.fecha_final?.trim()) {
+      errores.push('Debe seleccionar una fecha final.');
+    }
+
+    if (this.temporada.fecha_inicio && this.temporada.fecha_final) {
+      const fechaInicio = new Date(this.temporada.fecha_inicio);
+      const fechaFinal = new Date(this.temporada.fecha_final);
+      if (fechaInicio > fechaFinal) {
+        errores.push('La fecha de inicio no puede ser posterior a la fecha final.');
+      }
+    }
+
+    if (errores.length > 0) {
+      this.mensajeErrorModal = errores.join('\n');
+      this.cargandoAccion = false;
+      return;
+    }
 
     this.cargandoAccion = true;
 
     if (isNaN(desc) || desc < -100 || desc > 100) {
-    this.mensajeErrorModal = 'El descuento debe estar entre -100 y 100.';
-    this.cargandoAccion=false;
-    return;
-  }
+      this.mensajeErrorModal = 'El descuento debe estar entre -100 y 100.';
+      this.cargandoAccion = false;
+      return;
+    }
     const datos = {
       idTemporada: this.temporada.idTemporada,
       nombre_temporada: this.temporada.nombre_temporada,
@@ -155,12 +187,45 @@ export class AdministrartemporadasComponent {
   }
 
   registrarTemporada() {
-    this.cargandoAccion = true;
-    if (!this.temporada.nombre_temporada || !this.temporada.fecha_inicio || !this.temporada.fecha_final) {
-      this.mensajeErrorModal = 'Todos los campos son obligatorios.';
+    const errores: string[] = [];
+    this.mensajeErrorModal = '';
+
+    const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_%\s/]+$/;
+    const desc = Number(this.temporada.descuento);
+
+    if (!this.temporada.nombre_temporada?.trim()) {
+      errores.push('El campo "Nombre de la temporada" no puede estar vacío.');
+    } else if (!regexSinCaracteresEspeciales.test(this.temporada.nombre_temporada)) {
+      errores.push('El campo "Nombre de la temporada" tiene caracteres no permitidos.');
+    }
+
+    if (!this.temporada.fecha_inicio?.trim()) {
+      errores.push('Debe seleccionar una fecha de inicio.');
+    }
+
+    if (!this.temporada.fecha_final?.trim()) {
+      errores.push('Debe seleccionar una fecha final.');
+    }
+
+    if (this.temporada.fecha_inicio && this.temporada.fecha_final) {
+      const fechaInicio = new Date(this.temporada.fecha_inicio);
+      const fechaFinal = new Date(this.temporada.fecha_final);
+      if (fechaInicio > fechaFinal) {
+        errores.push('La fecha de inicio no puede ser posterior a la fecha final.');
+      }
+    }
+
+    if (isNaN(desc) || desc < -100 || desc > 100) {
+      errores.push('El descuento debe estar entre -100 y 100.');
+    }
+
+    if (errores.length > 0) {
+      this.mensajeErrorModal = errores.join('\n');
       this.cargandoAccion = false;
       return;
     }
+
+    this.cargandoAccion = true;
 
     const datos = {
       idTemporada: 0,

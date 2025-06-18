@@ -64,12 +64,14 @@ export class AdministrarfacilidadesComponent implements OnInit {
 
 
   abrirFormularioNuevaFacilidad() {
+    this.mensajeErrorModal='';
     this.modoEdicion = false;
     this.facilidad = { id: 0, nombre: '', descripcion: '', imagen: '', visible: true };
     this.mostrarModal = true;
   }
 
   editarFacilidad(f: any) {
+    this.mensajeErrorModal='';
     this.modoEdicion = true;
     this.facilidad = { id: f.id, nombre: f.nombre, descripcion: f.descripcion, imagen: f.imagen, visible: f.visible };
     this.mostrarModal = true;
@@ -142,11 +144,31 @@ export class AdministrarfacilidadesComponent implements OnInit {
 
 
   actualizarFacilidad() {
-    if (!this.facilidad.nombre || !this.facilidad.descripcion || !this.facilidad.imagen) {
-      this.mensajeErrorModal = 'Todos los campos son obligatorios.';
+    const errores: string[] = [];
+    this.mensajeErrorModal = '';
+
+    const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_\s/]+$/;
+
+    if (!this.facilidad.nombre?.trim()) {
+      errores.push('El campo "Nombre" no puede estar vacío.');
+    } else if (!regexSinCaracteresEspeciales.test(this.facilidad.nombre)) {
+      errores.push('El campo "Nombre" tiene caracteres no permitidos.');
+    }
+
+    if (!this.facilidad.descripcion?.trim()) {
+      errores.push('El campo "Descripción" no puede estar vacío.');
+    } else if (!regexSinCaracteresEspeciales.test(this.facilidad.descripcion)) {
+      errores.push('El campo "Descripción" tiene caracteres no permitidos.');
+    }
+
+    if (errores.length > 0) {
+      this.mensajeErrorModal = errores.join('\n');
       return;
     }
+
     this.cargandoAccion = true;
+
+
     const procesar = (imagenUrl: string) => {
       const url = `${this.apiUrl}/Actualizar?idFacilidad=${this.facilidad.id}&nombre=${this.facilidad.nombre}&imagen=${imagenUrl}&descripcion=${this.facilidad.descripcion}`;
       this.http.put(url, {}, { headers: { 'Content-Type': 'application/json' }, responseType: 'text' }).subscribe({
