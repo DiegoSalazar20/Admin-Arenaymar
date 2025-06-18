@@ -122,12 +122,52 @@ export class AdministrarofertasComponent implements OnInit {
   }
 
   registrarOferta() {
+    const errores: string[] = [];
+    this.mensajeErrorModal = '';
+
+    const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_%\s/]+$/;
     const desc = Number(this.oferta.descuento);
 
-    if (!this.oferta.nombre_Oferta || !this.oferta.fecha_inicio || !this.oferta.fecha_final || !this.oferta.idTipoHabitacion) {
-      this.mensajeErrorModal = 'Todos los campos son obligatorios.';
+    if (!this.oferta.nombre_Oferta?.trim()) {
+      errores.push('El campo "Nombre" no puede estar vacío.');
+    } else if (!regexSinCaracteresEspeciales.test(this.oferta.nombre_Oferta)) {
+      errores.push('El campo "Nombre" tiene caracteres no permitidos.');
+    }
+
+    if (!this.oferta.fecha_inicio?.trim()) {
+      errores.push('Debe seleccionar una fecha de inicio.');
+    }
+
+    if (!this.oferta.fecha_final?.trim()) {
+      errores.push('Debe seleccionar una fecha final.');
+    }
+
+    if (this.oferta.fecha_inicio && this.oferta.fecha_final) {
+      const fechaInicio = new Date(this.oferta.fecha_inicio);
+      const fechaFinal = new Date(this.oferta.fecha_final);
+      if (fechaInicio > fechaFinal) {
+        errores.push('La fecha de inicio no puede ser posterior a la fecha final.');
+      }
+    }
+
+    if (!this.oferta.idTipoHabitacion?.toString().trim()) {
+      errores.push('Debe seleccionar un tipo de habitación.');
+    }
+
+    if ( desc < 0 || desc > 100) {
+      errores.push('El descuento debe estar entre -100 y 100.');
+    }
+
+    if(desc==0){
+      errores.push('El descuento no puede ser 0 ni estar vacío.');
+    }
+
+    if (errores.length > 0) {
+      this.mensajeErrorModal = errores.join('\n');
       return;
     }
+
+    this.cargandoAccion = true;
 
     this.cargandoAccion = true;
 
@@ -163,15 +203,48 @@ export class AdministrarofertasComponent implements OnInit {
 
 
   actualizarOferta() {
+    const errores: string[] = [];
+    this.mensajeErrorModal = '';
+
+    const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_\s/]+$/;
     const desc = Number(this.oferta.descuento);
 
-    if (!this.oferta.nombre_Oferta || !this.oferta.fecha_inicio || !this.oferta.fecha_final || !this.oferta.idTipoHabitacion) {
-      this.mensajeErrorModal = 'Todos los campos son obligatorios.';
-      return;
+    if (!this.oferta.nombre_Oferta?.trim()) {
+      errores.push('El campo "Nombre" no puede estar vacío.');
+    } else if (!regexSinCaracteresEspeciales.test(this.oferta.nombre_Oferta)) {
+      errores.push('El campo "Nombre" tiene caracteres no permitidos.');
     }
 
-    if (isNaN(desc) || desc < -100 || desc > 100) {
-      this.mensajeErrorModal = 'El descuento debe estar entre -100 y 100.';
+    if (!this.oferta.fecha_inicio?.trim()) {
+      errores.push('Debe seleccionar una fecha de inicio.');
+    }
+
+    if (!this.oferta.fecha_final?.trim()) {
+      errores.push('Debe seleccionar una fecha final.');
+    }
+
+    if (this.oferta.fecha_inicio && this.oferta.fecha_final) {
+      const fechaInicio = new Date(this.oferta.fecha_inicio);
+      const fechaFinal = new Date(this.oferta.fecha_final);
+      if (fechaInicio > fechaFinal) {
+        errores.push('La fecha de inicio no puede ser posterior a la fecha final.');
+      }
+    }
+
+    if (!this.oferta.idTipoHabitacion?.toString().trim()) {
+      errores.push('Debe seleccionar un tipo de habitación.');
+    }
+
+    if ( desc < 0 || desc > 100) {
+      errores.push('El descuento debe estar entre -100 y 100.');
+    }
+
+    if(this.oferta.descuento==0){
+      errores.push('El descuento no puede ser 0 ni estar vacío.');
+    }
+
+    if (errores.length > 0) {
+      this.mensajeErrorModal = errores.join('\n');
       return;
     }
 
