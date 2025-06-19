@@ -84,6 +84,7 @@ export class AdministrarhabitacionesComponent {
   }
 
   editarTipoHabitacion(id: number) {
+    this.mensajeErrorModal='';
 
     const habitacion = this.tiposDeHabitaciones.find(h => h.idTipoHabitacion === id);
     if (habitacion) {
@@ -104,14 +105,38 @@ export class AdministrarhabitacionesComponent {
   }
 
   actualizarTipoHabitacion() {
-    this.cargandoAccion = true;
-    this.mensajeErrorModal = '';
+    const errores: string[] = [];
+  this.mensajeErrorModal = '';
 
-    if (!this.tipoHabitacion.nombre || !this.tipoHabitacion.descripcion || this.tipoHabitacion.precio <= 0) {
-      this.mensajeErrorModal = 'Por favor, complete todos los campos correctamente.';
-      this.cargandoAccion = false;
-      return;
-    }
+  const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_%\s/]+$/;
+
+  if (!this.tipoHabitacion.nombre?.trim()) {
+    errores.push('El campo "Nombre" no puede estar vacío.');
+  } else if (!regexSinCaracteresEspeciales.test(this.tipoHabitacion.nombre)) {
+    errores.push('El campo "Nombre" tiene caracteres no permitidos.');
+  }
+
+  if (!this.tipoHabitacion.descripcion?.trim()) {
+    errores.push('El campo "Descripción" no puede estar vacío.');
+  } else if (!regexSinCaracteresEspeciales.test(this.tipoHabitacion.descripcion)) {
+    errores.push('El campo "Descripción" tiene caracteres no permitidos.');
+  }
+
+  if (isNaN(Number(this.tipoHabitacion.precio)) || Number(this.tipoHabitacion.precio) <= 0) {
+    errores.push('El precio debe ser un número mayor a 0.');
+  }
+
+  if (!this.imagenParaSubir && !this.tipoHabitacion.imagen?.trim()) {
+    errores.push('Debe seleccionar una imagen.');
+  }
+
+  if (errores.length > 0) {
+    this.mensajeErrorModal = errores.join('\n');
+    this.cargandoAccion = false;
+    return;
+  }
+
+  this.cargandoAccion = true;
 
     const procesarActualizacion = (imagenUrl: string) => {
       const datos = {

@@ -49,6 +49,7 @@ export class ModificarpaginasComponent {
   constructor(private http: HttpClient) { }
 
   abrirModal() {
+    this.mensajeError=''
     if (this.paginaSeleccionada === 'sobre-nosotros') {
       this.obtenerSobreNosotros();
       this.modificarSobrenosotros = true;
@@ -88,6 +89,23 @@ export class ModificarpaginasComponent {
 
   actualizarSobreNosotros() {
     this.mensajeError = '';
+
+    const errores: string[] = [];
+
+    const regexTextoValido = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_%¡!¿?"'\s]+$/;
+
+    if (!this.sobreNosotros.texto?.trim()) {
+      errores.push('El campo de texto no puede estar vacío.');
+    } else if (!regexTextoValido.test(this.sobreNosotros.texto)) {
+      errores.push('El texto contiene caracteres no permitidos.');
+    }
+
+    if (errores.length > 0) {
+      this.mensajeError = errores.join('\n');
+      this.cargandoAccion = false;
+      return;
+    }
+
     this.cargandoAccion = true;
 
     const cuerpo = {
@@ -111,9 +129,19 @@ export class ModificarpaginasComponent {
 
   actualizarHome() {
     this.mensajeError = '';
+    const errores: string[] = [];
+    const regexTextoValido = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,;:_"'¿?¡!%\- \n]+$/;
 
-    if (!this.home.contenido || !this.home.contenido.trim()) {
-      this.mensajeError = 'La descripción no puede estar vacía.';
+    
+    if (!this.home.contenido?.trim()) {
+      errores.push('El campo de texto no puede estar vacío.');
+    } else if (!regexTextoValido.test(this.home.contenido)) {
+      errores.push('El texto contiene caracteres no permitidos.');
+    }
+
+    if (errores.length > 0) {
+      this.mensajeError = errores.join('\n');
+      this.cargandoAccion = false;
       return;
     }
 
@@ -124,6 +152,7 @@ export class ModificarpaginasComponent {
       imagenEnviar = this.imagenHomePreview as string;
     }
 
+    
     const cuerpo = {
       id: this.home.idHome,
       imagen: imagenEnviar,
@@ -170,10 +199,10 @@ export class ModificarpaginasComponent {
   }
 
   cerrarModal() {
-  this.cerrandoModalSobreNosotros = true;
-  this.cerrandoModalHome = true;
-  this.homeDescripcionTocado = false;
-}
+    this.cerrandoModalSobreNosotros = true;
+    this.cerrandoModalHome = true;
+    this.homeDescripcionTocado = false;
+  }
 
   cerrarModalNotificacion() {
     this.cerrandoNotificacion = true;

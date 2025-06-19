@@ -99,6 +99,8 @@
         </div>
       </div>
 
+      <div *ngIf="mensajeErrorModal" class="modal-error">{{ mensajeErrorModal }}</div>
+
       <div class="modal-footer">
         <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
 

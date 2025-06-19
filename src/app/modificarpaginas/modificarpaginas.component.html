@@ -74,9 +74,6 @@
         <div class="editor-contenido">
           <textarea [(ngModel)]="home.contenido" rows="6" class="textarea-estilizada"
             (blur)="homeDescripcionTocado = true" (input)="homeDescripcionTocado = true"></textarea>
-          <div *ngIf="homeDescripcionTocado && !home.contenido.trim()" class="mensaje-error">
-            La descripción no puede estar vacía.
-          </div>
         </div>
       </div>
       <div class="modal-imagenes">
@@ -105,7 +102,7 @@
 
       <div class="modal-footer">
         <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
-        <button class="btn-confirm" (click)="actualizarHome()" [disabled]="cargandoAccion || !home.contenido.trim()">
+        <button class="btn-confirm" (click)="actualizarHome()" [disabled]="cargandoAccion">
           <ng-container *ngIf="!cargandoAccion">Actualizar</ng-container>
           <div *ngIf="cargandoAccion" class="cargando"></div>
         </button>

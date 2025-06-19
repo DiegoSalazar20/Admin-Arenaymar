@@ -367,6 +367,12 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
   border: none;
 }
 
+.modal-error {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
 .modal-footer {
   display: flex;
   justify-content: flex-end;
