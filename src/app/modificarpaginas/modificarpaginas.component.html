@@ -57,6 +57,39 @@
   </div>
 </div>
 
+
+<div class="modal-backdrop" *ngIf="modificarComoLlegar">
+  <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoModalComoLlegar }"
+    (animationend)="onAnimationEnd('modalComoLlegar')">
+    <div class="modal-body">
+      <div class="modal-titulo-row">
+        <h3>Modificar página Como llegar</h3>
+        <br />
+      </div>
+
+      <div class="modal-editor">
+        <div class="editor-header">
+          <span>Editar descripción</span>
+          <button class="btn-lapiz">✎</button>
+        </div>
+        <div class="editor-contenido">
+          <textarea [(ngModel)]="comoLlegar.descripcion" rows="6" class="textarea-estilizada"></textarea>
+        </div>
+      </div>
+
+      <div *ngIf="mensajeError" class="mensaje-error">{{ mensajeError }}</div>
+      <div *ngIf="mensajeInfo" class="mensaje-info">{{ mensajeInfo }}</div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="cerrarModal()">Cancelar</button>
+        <button class="btn-confirm" (click)="actualizarComoLlegar()" [disabled]="cargandoAccion">
+          <ng-container *ngIf="!cargandoAccion">Actualizar</ng-container>
+          <div *ngIf="cargandoAccion" class="cargando"></div>
+        </button>
+      </div>
+    </div>
+  </div>
+
 <div class="modal-backdrop" *ngIf="modificarHome">
   <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoModalHome }"
     (animationend)="onAnimationEnd('modalHome')">

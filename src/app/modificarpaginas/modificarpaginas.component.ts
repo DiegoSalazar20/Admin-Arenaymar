@@ -15,6 +15,8 @@ export class ModificarpaginasComponent {
   paginaSeleccionada: string = '';
   modificarSobrenosotros: boolean = false;
   cerrandoModalSobreNosotros: boolean = false;
+  modificarComoLlegar: boolean = false;
+  cerrandoModalComoLlegar: boolean = false;
 
   modificarHome: boolean = false;
   cerrandoModalHome: boolean = false;
@@ -26,6 +28,13 @@ export class ModificarpaginasComponent {
   sobreNosotros: any = {
     id: '',
     texto: ''
+  };
+
+  comoLlegar: any = {
+    idUbicacion: '',
+    descripcion: '',
+    latidud: 0,
+    longitud: 0
   };
 
   home: any = {
@@ -45,6 +54,7 @@ export class ModificarpaginasComponent {
 
   private urlSobreNosotros = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/SobreNosotros';
   private urlHome = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Home';
+  private urlComoLlegar = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/ComoLlegar';
 
   constructor(private http: HttpClient) { }
 
@@ -57,7 +67,11 @@ export class ModificarpaginasComponent {
       this.obtenerHome();
       this.modificarHome = true;
       this.homeDescripcionTocado = false;
-    } else {
+    }else if(this.paginaSeleccionada == 'como-llegar'){
+      this.obtenerComoLlegar();
+      this.modificarComoLlegar = true;
+    }
+     else {
       console.log('Página no implementada aún');
     }
   }
@@ -70,6 +84,20 @@ export class ModificarpaginasComponent {
       },
       error: (err) => {
         console.error('Error al obtener la información de Sobre Nosotros', err);
+      }
+    });
+  }
+
+  obtenerComoLlegar() {
+    this.http.get<any>(this.urlComoLlegar).subscribe({
+      next: (data) => {
+        this.comoLlegar.idUbicacion = data.idUbicacion;
+        this.comoLlegar.descripcion = data.descripcion;
+        this.comoLlegar.latitud = data.latitud;
+        this.comoLlegar.longitud = data.longitud;
+      },
+      error: (err) => {
+        console.error('Error al obtener la información de Como Llegar', err);
       }
     });
   }
@@ -114,6 +142,48 @@ export class ModificarpaginasComponent {
     };
 
     this.http.put('https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/SobreNosotros', cuerpo).subscribe({
+      next: () => {
+        this.cargandoAccion = false;
+       this.cerrarModal();
+        this.abrirModalNotificacion('Actualizado', 'Texto actualizado correctamente.');
+      },
+      error: (err) => {
+        console.error('Error al actualizar:', err);
+        this.abrirModalNotificacion('Error', 'Ocurrió un error al actualizar el texto.');
+        this.cargandoAccion = false;
+      }
+    });
+  }
+
+  actualizarComoLlegar() {
+    this.mensajeError = '';
+
+    const errores: string[] = [];
+
+    const regexTextoValido = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_%¡!¿?"'\s]+$/;
+
+    if (!this.comoLlegar.descripcion?.trim()) {
+      errores.push('El campo de texto no puede estar vacío.');
+    } else if (!regexTextoValido.test(this.comoLlegar.descripcion)) {
+      errores.push('El texto contiene caracteres no permitidos.');
+    }
+
+    if (errores.length > 0) {
+      this.mensajeError = errores.join('\n');
+      this.cargandoAccion = false;
+      return;
+    }
+
+    this.cargandoAccion = true;
+
+    const cuerpo = {
+      idUbicacion: this.comoLlegar.idUbicacion,
+      descripcion: this.comoLlegar.descripcion,
+      latitud: this.comoLlegar.latidud,
+      longitud: this.comoLlegar.longitud
+    };
+
+    this.http.put('https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/ComoLlegar', cuerpo).subscribe({
       next: () => {
         this.cargandoAccion = false;
         this.cerrarModal();
@@ -202,6 +272,7 @@ export class ModificarpaginasComponent {
     this.cerrandoModalSobreNosotros = true;
     this.cerrandoModalHome = true;
     this.homeDescripcionTocado = false;
+    this.cerrandoModalComoLlegar = true;
   }
 
   cerrarModalNotificacion() {
@@ -214,10 +285,15 @@ export class ModificarpaginasComponent {
     this.mostrarNotificacion = true;
   }
 
-  onAnimationEnd(tipo: 'modalSobreNosotros' | 'Notificacion' | 'Confirmacion' | 'modalHome') {
+  onAnimationEnd(tipo: 'modalSobreNosotros' | 'Notificacion' | 'Confirmacion' | 'modalHome' | 'modalComoLlegar') {
     if (tipo === 'modalSobreNosotros' && this.cerrandoModalSobreNosotros) {
       this.cerrandoModalSobreNosotros = false;
       this.modificarSobrenosotros = false;
+    }
+
+    if (tipo === 'modalComoLlegar' && this.cerrandoModalComoLlegar) {
+      this.cerrandoModalComoLlegar = false;
+      this.modificarComoLlegar = false;
     }
 
     if (tipo === 'modalHome' && this.cerrandoModalHome) {
