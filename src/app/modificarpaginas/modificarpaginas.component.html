@@ -124,8 +124,6 @@
           <label>Subir nueva imagen</label>
           <div class="input-upload">
             <input type="file" (change)="onImagenHomeSeleccionada($event)" accept="image/*" />
-            <button *ngIf="imagenHomePreview" type="button" class="btn-cancel"
-              (click)="eliminarImagenHome()">Eliminar</button>
           </div>
           <div *ngIf="imagenHomeError" class="mensaje-error">{{ imagenHomeError }}</div>
         </div>

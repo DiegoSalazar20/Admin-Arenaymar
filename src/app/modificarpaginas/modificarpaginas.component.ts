@@ -52,6 +52,9 @@ export class ModificarpaginasComponent {
   tituloNotificacion = '';
   mensajeNotificacion = '';
 
+  apiUrlImgBB = 'https://api.imgbb.com/1/upload';
+  apiKeyImgBB = '3c639960d9b0b9276d0d0cc19b1e2319';
+
   private urlSobreNosotros = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/SobreNosotros';
   private urlHome = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Home';
   private urlComoLlegar = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/ComoLlegar';
@@ -198,34 +201,28 @@ export class ModificarpaginasComponent {
   }
 
   actualizarHome() {
-    this.mensajeError = '';
-    const errores: string[] = [];
-    const regexTextoValido = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,;:_"'¿?¡!%\- \n]+$/;
+  this.mensajeError = '';
+  const errores: string[] = [];
+  const regexTextoValido = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,;:_"'¿?¡!%\- \n]+$/;
 
-    
-    if (!this.home.contenido?.trim()) {
-      errores.push('El campo de texto no puede estar vacío.');
-    } else if (!regexTextoValido.test(this.home.contenido)) {
-      errores.push('El texto contiene caracteres no permitidos.');
-    }
+  if (!this.home.contenido?.trim()) {
+    errores.push('El campo de texto no puede estar vacío.');
+  } else if (!regexTextoValido.test(this.home.contenido)) {
+    errores.push('El texto contiene caracteres no permitidos.');
+  }
 
-    if (errores.length > 0) {
-      this.mensajeError = errores.join('\n');
-      this.cargandoAccion = false;
-      return;
-    }
+  if (errores.length > 0) {
+    this.mensajeError = errores.join('\n');
+    this.cargandoAccion = false;
+    return;
+  }
 
-    this.cargandoAccion = true;
+  this.cargandoAccion = true;
 
-    let imagenEnviar = this.home.imagen;
-    if (this.imagenHomePreview) {
-      imagenEnviar = this.imagenHomePreview as string;
-    }
-
-    
+  const procesarActualizacion = (urlImagen: string) => {
     const cuerpo = {
       id: this.home.idHome,
-      imagen: imagenEnviar,
+      imagen: urlImagen,
       contenido: this.home.contenido
     };
 
@@ -243,7 +240,34 @@ export class ModificarpaginasComponent {
         this.cargandoAccion = false;
       }
     });
+  };
+
+  if (!this.imagenHomeFile) {
+    procesarActualizacion(this.home.imagen);
+    return;
   }
+
+  const formData = new FormData();
+  formData.append('image', this.imagenHomeFile);
+
+  this.http.post(`${this.apiUrlImgBB}?key=${this.apiKeyImgBB}`, formData).subscribe({
+    next: (response: any) => {
+      const urlImagenSubida = response?.data?.url;
+      if (urlImagenSubida) {
+        procesarActualizacion(urlImagenSubida);
+      } else {
+        this.abrirModalNotificacion('Error', 'La imagen no pudo ser subida correctamente.');
+        this.cargandoAccion = false;
+      }
+    },
+    error: (err) => {
+      console.error('Error al subir imagen:', err);
+      this.abrirModalNotificacion('Error', 'Ocurrió un error al subir la imagen. Intente nuevamente.');
+      this.cargandoAccion = false;
+    }
+  });
+}
+
 
 
   onImagenHomeSeleccionada(event: any) {
