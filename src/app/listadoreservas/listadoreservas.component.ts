@@ -147,5 +147,82 @@ export class ListadoreservasComponent implements OnInit {
     this.cerrandoModal = true;
   }
 
+  imprimirReserva() {
+  const contenido = document.querySelector('.editor-contenido.datos-reserva');
+  if (!contenido) return;
+
+  const logoUrl = 'https://i.ibb.co/fYYxbjmG/logo-1.png';
+
+  const ventana = window.open('', '_blank', 'width=800,height=600');
+
+  if (ventana) {
+    ventana.document.write(`
+      <html>
+        <head>
+          <title>Reserva</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #FFFFFF;
+              color: #333;
+              padding: 40px 30px;
+            }
+
+            header {
+              display: flex;
+              align-items: center;
+              gap: 20px;
+              border-bottom: 2px solid #ccc;
+              margin-bottom: 20px;
+              padding-bottom: 10px;
+            }
+
+            header img {
+              width: 80px;
+              height: auto;
+            }
+
+            header h2 {
+              margin: 0;
+              font-size: 22px;
+              color: #2c3e50;
+            }
+
+            section {
+              font-size: 14px;
+              line-height: 1.5;
+            }
+
+            p {
+              margin: 8px 0;
+            }
+
+            strong {
+              color: #000;
+            }
+          </style>
+        </head>
+        <body>
+          <header>
+            <img src="${logoUrl}" alt="Logo del Hotel" />
+            <h2>Detalles de la Reserva</h2>
+          </header>
+
+          <section>
+            ${contenido.innerHTML}
+          </section>
+        </body>
+      </html>
+    `);
+
+    ventana.document.close();
+    ventana.focus();
+    ventana.print();
+    ventana.close();
+  }
+}
+
+
+
 
 }
