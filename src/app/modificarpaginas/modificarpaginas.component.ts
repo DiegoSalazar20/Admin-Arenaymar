@@ -269,10 +269,21 @@ export class ModificarpaginasComponent {
   }
 
   cerrarModal() {
-    this.cerrandoModalSobreNosotros = true;
-    this.cerrandoModalHome = true;
-    this.homeDescripcionTocado = false;
-    this.cerrandoModalComoLlegar = true;
+    if(this.paginaSeleccionada==='home'){
+      this.cerrandoModalHome=true;
+      this.homeDescripcionTocado = false;
+      return;
+    }
+
+    if(this.paginaSeleccionada==='sobre-nosotros'){
+      this.cerrandoModalSobreNosotros = true;
+      return;
+    }
+
+    if(this.paginaSeleccionada==='como-llegar'){
+      this.cerrandoModalComoLlegar = true;
+      return;
+    }
   }
 
   cerrarModalNotificacion() {

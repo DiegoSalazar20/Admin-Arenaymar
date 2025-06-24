@@ -65,42 +65,40 @@
 </div>
 
 <div class="modal-backdrop" *ngIf="mostrarModal">
+    <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoModal }" (animationend)="onAnimationEnd('modal')">
 
-  <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoModal }" (animationend)="onAnimationEnd('modal')">
-
-    <div class="modal-body">
-
-      <div class="modal-titulo-row">
-        <h3>Listado de Reservaciones - Ver Reserva</h3>
-        <button class="close-button" (click)="cerrarModal()">×</button>
-      </div>
-
-      <div class="modal-editor">
-        <div class="editor-contenido datos-reserva">
-          <p><strong>ID Reserva:</strong> {{ reservaSeleccionada.CodigoReserva }}</p>
-          <p><strong>Nombre:</strong> {{ reservaSeleccionada.Nombre }}</p>
-          <p><strong>Apellidos:</strong> {{ reservaSeleccionada.Apellidos }}</p>
-          <p><strong>Email:</strong> {{ reservaSeleccionada.Email }}</p>
-          <p><strong>Tarjeta:</strong> ************{{ reservaSeleccionada.Tarjeta }}</p>
-          <p><strong>Transacción:</strong> {{ reservaSeleccionada.NumeroTransaccion }}</p>
-          <p><strong>Fecha Llegada:</strong> {{ reservaSeleccionada.FechaLlegada | date: 'dd/MM/yyyy' }}</p>
-          <p><strong>Fecha Salida:</strong> {{ reservaSeleccionada.FechaSalida | date: 'dd/MM/yyyy' }}</p>
-          <p><strong>Tipo:</strong> {{ reservaSeleccionada.TipoHabitacionNombre }}</p>
+        <div class="modal-header">
+            <h2>Detalles de la Reserva</h2>
+            <button class="close-button" (click)="cerrarModal()">×</button>
         </div>
-      </div>
 
-      <div class="modal-footer">
-        <button class="btn-accion eliminar" (click)="eliminarReserva(reservaSeleccionada)">
-          <i class="fas fa-trash-alt"></i>
-        </button>
-        <button class="btn-accion editar">
-          <i class="fas fa-file-download"></i>
-        </button>
-      </div>
+        <div class="modal-body">
+            <div class="editor-contenido datos-reserva">
+                <p><strong>ID Reserva:</strong> {{ reservaSeleccionada.CodigoReserva }}</p>
+                <p><strong>Nombre:</strong> {{ reservaSeleccionada.Nombre }}</p>
+                <p><strong>Apellidos:</strong> {{ reservaSeleccionada.Apellidos }}</p>
+                <p><strong>Email:</strong> {{ reservaSeleccionada.Email }}</p>
+                <p><strong>Tarjeta:</strong> ************{{ reservaSeleccionada.Tarjeta }}</p>
+                <p><strong>Transacción:</strong> {{ reservaSeleccionada.NumeroTransaccion }}</p>
+                <p><strong>Fecha Llegada:</strong> {{ reservaSeleccionada.FechaLlegada | date: 'dd/MM/yyyy' }}</p>
+                <p><strong>Fecha Salida:</strong> {{ reservaSeleccionada.FechaSalida | date: 'dd/MM/yyyy' }}</p>
+                <p><strong>Tipo:</strong> {{ reservaSeleccionada.TipoHabitacionNombre }}</p>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-accion eliminar" (click)="eliminarReserva(reservaSeleccionada)" title="Eliminar reserva">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+            <button class="btn-accion editar" (click)="imprimirReserva()" title="Imprimir">
+                <i class="fas fa-file-download"></i>
+            </button>
+        </div>
+
     </div>
-
-  </div>
 </div>
+
+
 
 <div class="modal-backdrop confirmacion" *ngIf="mostrarConfirmacion">
     <div class="modal-container" [ngClass]="{ 'cerrando': cerrandoConfirmacion }"
@@ -114,7 +112,7 @@
         <div class="modal-body">
             <p>{{ mensajeConfirmacion }}</p>
         </div>
-        
+
         <div class="modal-footer">
             <button class="btn-cancel" (click)="cerrarModalConfirmacion()">Cancelar</button>
             <button class="btn-confirm" (click)="confirmarEliminarOferta()">Eliminar</button>
