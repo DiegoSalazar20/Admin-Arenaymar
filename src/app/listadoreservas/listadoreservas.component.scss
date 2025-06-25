@@ -43,64 +43,69 @@ html, body {
   color: #EEEEEE;
 }
 
-
-
-.table-responsive {
-  overflow-x: auto;
-  max-height: calc(100vh - 250px);
-  width: 90%;
-  margin-bottom: 10px;
+.contenedor-tabla-scroll {
+  max-height: 400px;
+  overflow: auto;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  min-height: 250px;
-}
-
-.table-responsive table {
   width: 100%;
+}
+
+.table-responsive {
+  width: max-content;
+  min-width: 100%;
   border-collapse: collapse;
-  font-family: 'Segoe UI', sans-serif;
+  border-spacing: 0;
   border-radius: 10px;
-  overflow: hidden;
 }
 
-thead tr:first-child th:first-child { border-top-left-radius: 10px; }
-thead tr:first-child th:last-child { border-top-right-radius: 10px; }
-tbody tr:last-child td:first-child { border-bottom-left-radius: 10px; }
-tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
-
-
-.table-responsive th {
-  background: #3F5B62;
+.table-responsive thead {
+  background-color: #3F5B62;
   color: #EEEEEE;
-  padding: 12px 16px;
-  font-size: 1rem;
-  text-align: left;
-  position: sticky;
-  top: 0;
-  z-index: 1;
 }
 
+.table-responsive th,
 .table-responsive td {
   padding: 12px 16px;
-  background: #7D9D9C;
-  color: #FFFFFF;
+  text-align: left;
+  font-size: 1rem;
   border-bottom: 1px solid #E4DCCF;
-  transition: all 0.3s ease;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .table-responsive tr:nth-child(even) td {
-  background: #8CA9AA;
+  background-color: #8CA9AA;
 }
 
-.table-responsive tbody tr:hover td {
-  background: #3F5B62;
+.table-responsive td {
+  background-color: #7D9D9C;
+  color: #FFFFFF;
   transition: all 0.3s ease;
 }
 
-.table-responsive td,
-.table-responsive th {
-  white-space: nowrap;
-  min-width: 100px;
+.table-responsive tbody tr:hover td {
+  background-color: #3F5B62;
+}
+
+.table-responsive thead tr:first-child th:first-child {
+  border-top-left-radius: 10px;
+}
+.table-responsive thead tr:first-child th:last-child {
+  border-top-right-radius: 10px;
+}
+.table-responsive tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+.table-responsive tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+}
+
+
+.acciones-botones {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
 }
 
 

@@ -7,7 +7,7 @@
         <div *ngIf="cargando" class="mensaje-info">Cargando...</div>
         <div *ngIf="error" class="mensaje-error">{{ error }}</div>
 
-        <table class="table-responsive" *ngIf="habitaciones.length">
+        <table id="tabla-habitaciones-hoy" class="table-responsive" *ngIf="habitaciones.length">
 
             <thead>
                 <tr>
