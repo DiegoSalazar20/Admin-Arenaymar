@@ -7,8 +7,8 @@
         <div *ngIf="cargando" class="mensaje-info">Cargando...</div>
         <div *ngIf="error" class="mensaje-error">{{ error }}</div>
 
-        <div class="table-responsive" *ngIf="reservas.length">
-            <table>
+        <div class="contenedor-tabla-scroll" *ngIf="reservas.length">
+            <table class="table-responsive">
                 <thead>
                     <tr>
                         <th>Id reserva</th>

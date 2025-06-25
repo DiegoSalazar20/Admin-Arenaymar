@@ -43,52 +43,61 @@ html, body {
   color: #EEEEEE;
 }
 
-
-
 .table-responsive {
-  overflow-x: auto;
-  width: 70%;
+  width: 90%;
   margin-bottom: 10px;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  min-height: 250px;
+  overflow: hidden;
 }
 
 .table-responsive table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'Segoe UI', sans-serif;
-  border-radius: 10px;
-  overflow: hidden;
+  table-layout: fixed;
+  display: block; 
 }
 
-thead tr:first-child th:first-child { border-top-left-radius: 10px; }
-thead tr:first-child th:last-child { border-top-right-radius: 10px; }
-tbody tr:last-child td:first-child { border-bottom-left-radius: 10px; }
-tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
-
-
-.table-responsive th {
-  background: #3F5B62;
-  color: #EEEEEE;
-  padding: 12px 16px;
-  font-size: 1rem;
-  text-align: left;
+.table-responsive thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
+  background: #3F5B62;
+}
+
+.table-responsive tbody {
+  display: block;
+  max-height: 350px; 
+  overflow-y: auto;
+  width: 100%;
+}
+
+.table-responsive tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table-responsive th,
+.table-responsive td {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.table-responsive th {
+  color: #EEEEEE;
+  background: #3F5B62;
 }
 
 .table-responsive td {
-  padding: 12px 16px;
   background: #7D9D9C;
   color: #FFFFFF;
   border-bottom: 1px solid #E4DCCF;
   transition: all 0.3s ease;
-}
-
-.table-responsive td img{
-  max-width: 200px;
 }
 
 .table-responsive tr:nth-child(even) td {
@@ -98,6 +107,15 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
 .table-responsive tbody tr:hover td {
   background: #3F5B62;
   transition: all 0.3s ease;
+}
+
+thead tr:first-child th:first-child { border-top-left-radius: 10px; }
+thead tr:first-child th:last-child { border-top-right-radius: 10px; }
+tbody tr:last-child td:first-child { border-bottom-left-radius: 10px; }
+tbody tr:last-child td:last-child { border-bottom-right-radius: 10px; }
+
+.table-responsive td img{
+  max-width: 200px;
 }
 
 .fecha-hoy {
