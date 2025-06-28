@@ -90,8 +90,10 @@
                     (keypress)="validarNumeros($event)" />
             </div>
 
-            <div *ngIf="mensajeErrorModal" class="modal-error">
-                {{ mensajeErrorModal }}
+            <div *ngIf="mensajeErrorModal.length > 0" class="modal-error">
+                <ul>
+                    <li *ngFor="let error of mensajeErrorModal">{{ error }}</li>
+                </ul>
             </div>
         </div>
 

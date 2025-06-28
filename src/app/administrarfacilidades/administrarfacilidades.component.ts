@@ -35,7 +35,7 @@ export class AdministrarfacilidadesComponent implements OnInit {
   mensajeConfirmacion = '';
   cargando = true;
   cargandoAccion = false;
-  mensajeErrorModal = '';
+  mensajeErrorModal: string[] = [];
 
   apiUrlImgBB = 'https://api.imgbb.com/1/upload';
   apiKeyImgBB = '3c639960d9b0b9276d0d0cc19b1e2319';
@@ -64,14 +64,14 @@ export class AdministrarfacilidadesComponent implements OnInit {
 
 
   abrirFormularioNuevaFacilidad() {
-    this.mensajeErrorModal='';
+    this.mensajeErrorModal=[];
     this.modoEdicion = false;
     this.facilidad = { id: 0, nombre: '', descripcion: '', imagen: '', visible: true };
     this.mostrarModal = true;
   }
 
   editarFacilidad(f: any) {
-    this.mensajeErrorModal='';
+    this.mensajeErrorModal=[];
     this.modoEdicion = true;
     this.facilidad = { id: f.id, nombre: f.nombre, descripcion: f.descripcion, imagen: f.imagen, visible: f.visible };
     this.mostrarModal = true;
@@ -79,7 +79,7 @@ export class AdministrarfacilidadesComponent implements OnInit {
   
   registrarFacilidad() {
     const errores: string[] = [];
-    this.mensajeErrorModal = '';
+    this.mensajeErrorModal = [];
 
     const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_\s/]+$/;
 
@@ -100,7 +100,7 @@ export class AdministrarfacilidadesComponent implements OnInit {
     }
 
     if (errores.length > 0) {
-      this.mensajeErrorModal = errores.join('\n');
+      this.mensajeErrorModal = errores;
       return;
     }
 
@@ -129,14 +129,14 @@ export class AdministrarfacilidadesComponent implements OnInit {
           },
           error: err => {
             console.error('Error al registrar facilidad:', err.error);
-            this.mensajeErrorModal = 'Error al registrar la facilidad.';
+            this.mensajeErrorModal = ['Error al registrar la facilidad.'];
             this.cargandoAccion = false;
           }
         });
       },
       error: err => {
         console.error('Error al subir imagen:', err.error);
-        this.mensajeErrorModal = 'No se pudo subir la imagen. Intente de nuevo.';
+        this.mensajeErrorModal = ['No se pudo subir la imagen. Intente de nuevo.'];
         this.cargandoAccion = false;
       }
     });
@@ -145,7 +145,7 @@ export class AdministrarfacilidadesComponent implements OnInit {
 
   actualizarFacilidad() {
     const errores: string[] = [];
-    this.mensajeErrorModal = '';
+    this.mensajeErrorModal = [];
 
     const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_\s/]+$/;
 
@@ -162,7 +162,7 @@ export class AdministrarfacilidadesComponent implements OnInit {
     }
 
     if (errores.length > 0) {
-      this.mensajeErrorModal = errores.join('\n');
+      this.mensajeErrorModal = errores;
       return;
     }
 
@@ -180,7 +180,7 @@ export class AdministrarfacilidadesComponent implements OnInit {
         },
         error: (error) => {
           console.error(error);
-          this.mensajeErrorModal = 'No se pudo actualizar la facilidad.';
+          this.mensajeErrorModal = ['No se pudo actualizar la facilidad.'];
           this.cargandoAccion = false;
         }
       });
@@ -189,7 +189,7 @@ export class AdministrarfacilidadesComponent implements OnInit {
       this.subirImagen().subscribe({
         next: (res: any) => procesar(res.data.url),
         error: () => {
-          this.mensajeErrorModal = 'Error al subir imagen';
+          this.mensajeErrorModal = ['Error al subir imagen'];
           this.cargandoAccion = false;
         }
       });

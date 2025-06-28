@@ -46,7 +46,7 @@ export class AdministrarofertasComponent implements OnInit {
 
   cargando = true;
   cargandoAccion = false;
-  mensajeErrorModal = '';
+  mensajeErrorModal: string[] = [];
 
   private apiUrl = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Ofertas';
   private tipoHabUrl = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/TipoHabitacion/ObtenerOfertas';
@@ -96,6 +96,7 @@ export class AdministrarofertasComponent implements OnInit {
   }
 
   abrirFormularioNuevaOferta() {
+    this.mensajeErrorModal=[];
     this.modoEdicion = false;
     this.oferta = {
       idOferta: null,
@@ -109,6 +110,7 @@ export class AdministrarofertasComponent implements OnInit {
   }
 
   editarOferta(o: any) {
+    this.mensajeErrorModal=[];
     this.modoEdicion = true;
     this.oferta = {
       idOferta: o.idOferta,
@@ -123,7 +125,7 @@ export class AdministrarofertasComponent implements OnInit {
 
   registrarOferta() {
     const errores: string[] = [];
-    this.mensajeErrorModal = '';
+    this.mensajeErrorModal = [];
 
     const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_%\s/]+$/;
     const desc = Number(this.oferta.descuento);
@@ -163,7 +165,7 @@ export class AdministrarofertasComponent implements OnInit {
     }
 
     if (errores.length > 0) {
-      this.mensajeErrorModal = errores.join('\n');
+      this.mensajeErrorModal = errores;
       return;
     }
 
@@ -172,7 +174,7 @@ export class AdministrarofertasComponent implements OnInit {
     this.cargandoAccion = true;
 
     if (isNaN(desc) || desc < -100 || desc > 100) {
-      this.mensajeErrorModal = 'El descuento debe estar entre -100 y 100.';
+      this.mensajeErrorModal = ['El descuento debe estar entre -100 y 100.'];
       this.cargandoAccion = false;
       return;
     }
@@ -195,7 +197,7 @@ export class AdministrarofertasComponent implements OnInit {
       },
       error: err => {
         console.error('Error al registrar:', err.error);
-        this.mensajeErrorModal = 'Error al registrar la oferta.';
+        this.mensajeErrorModal = ['Error al registrar la oferta.'];
         this.cargandoAccion = false;
       }
     });
@@ -204,7 +206,7 @@ export class AdministrarofertasComponent implements OnInit {
 
   actualizarOferta() {
     const errores: string[] = [];
-    this.mensajeErrorModal = '';
+    this.mensajeErrorModal = [];
 
     const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_\s/]+$/;
     const desc = Number(this.oferta.descuento);
@@ -244,7 +246,7 @@ export class AdministrarofertasComponent implements OnInit {
     }
 
     if (errores.length > 0) {
-      this.mensajeErrorModal = errores.join('\n');
+      this.mensajeErrorModal = errores;
       return;
     }
 
@@ -267,7 +269,7 @@ export class AdministrarofertasComponent implements OnInit {
       },
       error: err => {
         console.error(err);
-        this.mensajeErrorModal = 'Error al actualizar la oferta.';
+        this.mensajeErrorModal = ['Error al actualizar la oferta.'];
         this.cargandoAccion = false;
       }
     });

@@ -43,7 +43,8 @@ export class ActualizarpublicidadComponent {
 
   cargando = true;
   cargandoAccion = false;
-  mensajeErrorModal = '';
+
+  mensajeErrorModal: string[] = [];
 
   apiUrlImgBB = 'https://api.imgbb.com/1/upload';
   apiKeyImgBB = '3c639960d9b0b9276d0d0cc19b1e2319';
@@ -89,7 +90,7 @@ export class ActualizarpublicidadComponent {
   }
 
   abrirFormularioNuevaOferta() {
-    this.mensajeErrorModal='';
+    this.mensajeErrorModal=[];
     this.modoEdicion = false;
     this.publicidad = {
       id: 0,
@@ -103,7 +104,7 @@ export class ActualizarpublicidadComponent {
   }
 
   editarOferta(o: any) {
-    this.mensajeErrorModal='';
+    this.mensajeErrorModal=[];
     this.modoEdicion = true;
     this.publicidad = {
       id: o.id,
@@ -119,7 +120,7 @@ export class ActualizarpublicidadComponent {
   registrarPublicidad() {
 
     const errores: string[] = [];
-    this.mensajeErrorModal = '';
+    this.mensajeErrorModal = [];
     const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_\s/]+$/;
     const regexURL = /^(https?:\/\/)?[\w\-]+(\.[\w\-]+)+[/#?]?.*$/;
 
@@ -146,7 +147,7 @@ export class ActualizarpublicidadComponent {
     }
 
     if (errores.length > 0) {
-      this.mensajeErrorModal = errores.join('\n');
+      this.mensajeErrorModal = errores;
       return;
     }
 
@@ -173,14 +174,14 @@ export class ActualizarpublicidadComponent {
           },
           error: err => {
             console.error('Error al registrar:', err.error);
-            this.mensajeErrorModal = 'Error al registrar la publicidad.';
+            this.mensajeErrorModal = ['Error al registrar la publicidad.'];
             this.cargandoAccion = false;
           }
         });
       },
       error: err => {
         console.error('Error al subir imagen:', err.error);
-        this.mensajeErrorModal = 'No se pudo subir la imagen. Intente de nuevo.';
+        this.mensajeErrorModal = ['No se pudo subir la imagen. Intente de nuevo.'];
         this.cargandoAccion = false;
       }
     });
@@ -190,7 +191,7 @@ export class ActualizarpublicidadComponent {
   actualizarOferta() {
 
     const errores: string[] = [];
-    this.mensajeErrorModal = '';
+    this.mensajeErrorModal = [];
     const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_\s/]+$/;
     const regexURL = /^(https?:\/\/)?[\w\-]+(\.[\w\-]+)+[/#?]?.*$/;
 
@@ -213,7 +214,7 @@ export class ActualizarpublicidadComponent {
     }
 
     if (errores.length > 0) {
-      this.mensajeErrorModal = errores.join('\n');
+      this.mensajeErrorModal = errores;
       return;
     }
 
@@ -238,7 +239,7 @@ export class ActualizarpublicidadComponent {
         },
         error: (error) => {
           console.error(error);
-          this.mensajeErrorModal = 'No se pudo actualizar la publicidad.';
+          this.mensajeErrorModal = ['No se pudo actualizar la publicidad.'];
           this.abrirModalNotificacion('Error al actualizar los datos', 'Ocurrió un error al actualizar los datos de la publicidad.');
           this.cargandoAccion = false;
         }
@@ -284,7 +285,7 @@ export class ActualizarpublicidadComponent {
       },
       error: (error) => {
         console.error(error);
-        this.mensajeErrorModal = 'No se pudo habilitar la publicidad.';
+        this.mensajeErrorModal = ['No se pudo habilitar la publicidad.'];
         this.abrirModalNotificacion('Error al habilitar', 'Ocurrió un error al habilitar la publicidad.');
         this.cargandoAccion = false;
       }
@@ -305,7 +306,7 @@ export class ActualizarpublicidadComponent {
       },
       error: (error) => {
         console.error(error);
-        this.mensajeErrorModal = 'No se pudo deshabilitar la publicidad.';
+        this.mensajeErrorModal = ['No se pudo deshabilitar la publicidad.'];
         this.abrirModalNotificacion('Error al deshabilitar', 'Ocurrió un error al deshabilitar la publicidad.');
         this.cargandoAccion = false;
       }
