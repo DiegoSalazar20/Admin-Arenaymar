@@ -95,7 +95,11 @@
                 </div>
             </div>
 
-            <div *ngIf="mensajeErrorModal" class="modal-error">{{ mensajeErrorModal }}</div>
+            <div *ngIf="mensajeErrorModal.length > 0" class="modal-error">
+                <ul>
+                    <li *ngFor="let error of mensajeErrorModal">{{ error }}</li>
+                </ul>
+            </div>
             
         </div>
 

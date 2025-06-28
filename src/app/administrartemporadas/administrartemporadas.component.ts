@@ -46,7 +46,7 @@ export class AdministrartemporadasComponent {
     descuento: 0
   };
 
-  mensajeErrorModal = '';
+  mensajeErrorModal: string[] = [];
 
   private apiUrl = 'https://arenaymar-frdyg5caarhsd2g5.eastus-01.azurewebsites.net/api/Temporada';
 
@@ -74,6 +74,7 @@ export class AdministrartemporadasComponent {
 
 
   abrirFormularioNuevaTemporada() {
+    this.mensajeErrorModal=[];
     this.modoEdicion = false;
     this.temporada = {
       idTemporada: null,
@@ -86,6 +87,7 @@ export class AdministrartemporadasComponent {
   }
 
   editarTemporada(t: any) {
+    this.mensajeErrorModal=[];
     this.modoEdicion = true;
 
     this.temporada = {
@@ -122,7 +124,7 @@ export class AdministrartemporadasComponent {
 
   actualizarTemporada() {
     const errores: string[] = [];
-    this.mensajeErrorModal = '';
+    this.mensajeErrorModal = [];
 
     const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_%\s/]+$/;
     const desc = Number(this.temporada.descuento);
@@ -150,7 +152,7 @@ export class AdministrartemporadasComponent {
     }
 
     if (errores.length > 0) {
-      this.mensajeErrorModal = errores.join('\n');
+      this.mensajeErrorModal = errores;
       this.cargandoAccion = false;
       return;
     }
@@ -158,7 +160,7 @@ export class AdministrartemporadasComponent {
     this.cargandoAccion = true;
 
     if (isNaN(desc) || desc < -100 || desc > 100) {
-      this.mensajeErrorModal = 'El descuento debe estar entre -100 y 100.';
+      this.mensajeErrorModal = ['El descuento debe estar entre -100 y 100.'];
       this.cargandoAccion = false;
       return;
     }
@@ -181,14 +183,14 @@ export class AdministrartemporadasComponent {
         console.error(error);
         this.cargandoAccion = false;
         this.abrirModalNotificacion('Erro al actualizar la temporada', 'Ocurrió un error al actualizar los datos de la temporada.');
-        this.mensajeErrorModal = 'Error al actualizar la temporada.';
+        this.mensajeErrorModal = ['Error al actualizar la temporada.'];
       }
     });
   }
 
   registrarTemporada() {
     const errores: string[] = [];
-    this.mensajeErrorModal = '';
+    this.mensajeErrorModal = [];
 
     const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_%\s/]+$/;
     const desc = Number(this.temporada.descuento);
@@ -220,7 +222,7 @@ export class AdministrartemporadasComponent {
     }
 
     if (errores.length > 0) {
-      this.mensajeErrorModal = errores.join('\n');
+      this.mensajeErrorModal = errores;
       this.cargandoAccion = false;
       return;
     }
@@ -246,7 +248,7 @@ export class AdministrartemporadasComponent {
         console.error(error);
         this.cargandoAccion = false;
         this.abrirModalNotificacion('Error al registrar la temporada', 'Ocurrió un error al registrar la temporada.');
-        this.mensajeErrorModal = 'Error al registrar la temporada.';
+        this.mensajeErrorModal = ['Error al registrar la temporada.'];
       }
     });
   }

@@ -25,7 +25,7 @@ export class AdministrarhabitacionesComponent {
   cargandoAccion = false;
   cerrandoModal = false;
 
-  mensajeErrorModal = '';
+  mensajeErrorModal: string[] = [];
 
   mostrarNotificacion = false;
   cerrandoNotificacion = false;
@@ -84,7 +84,7 @@ export class AdministrarhabitacionesComponent {
   }
 
   editarTipoHabitacion(id: number) {
-    this.mensajeErrorModal='';
+    this.mensajeErrorModal=[];
 
     const habitacion = this.tiposDeHabitaciones.find(h => h.idTipoHabitacion === id);
     if (habitacion) {
@@ -106,7 +106,7 @@ export class AdministrarhabitacionesComponent {
 
   actualizarTipoHabitacion() {
     const errores: string[] = [];
-  this.mensajeErrorModal = '';
+  this.mensajeErrorModal = [];
 
   const regexSinCaracteresEspeciales = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,:;()\-_%\s/]+$/;
 
@@ -131,7 +131,7 @@ export class AdministrarhabitacionesComponent {
   }
 
   if (errores.length > 0) {
-    this.mensajeErrorModal = errores.join('\n');
+    this.mensajeErrorModal = errores;
     this.cargandoAccion = false;
     return;
   }
@@ -161,7 +161,7 @@ export class AdministrarhabitacionesComponent {
         },
         error: (error) => {
           console.error(error);
-          this.mensajeErrorModal = 'No se pudo actualizar el tipo de habitación.';
+          this.mensajeErrorModal = ['No se pudo actualizar el tipo de habitación.'];
           this.abrirModalNotificacion('Error al actualizar los datos', 'Ocurrió un error al actualizar los datos de la habitación.');
           this.cargandoAccion = false;
         }
